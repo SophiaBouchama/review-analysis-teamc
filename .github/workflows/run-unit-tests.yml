@@ -15,5 +15,5 @@ jobs:
       with: 
         python-version: '3.11'
     - name: "Run Python tests"
-      run: pytest
+      run: pip install -U pytest && pytest
       working-directory: code/aml
