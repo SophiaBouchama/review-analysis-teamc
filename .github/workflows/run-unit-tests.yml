@@ -1,0 +1,19 @@
+name: run-python-tests
+on:
+  push:
+    branches:
+      - model-naive_bayes-nt
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with: 
+        python-version: '3.11'
+    - name: "Run Python tests"
+      run: pytest
+      working-directory: code/aml
