@@ -25,9 +25,9 @@ df = pd.read_csv(args.raw_data)
 df.Time = df.Time.apply(lambda x: pd.to_datetime(x, unit='s'))
 
 # Profile Name imputation
-userIdsWithoutProfileName = df[df.ProfileName.isna()].UserId
-for userId in userIdsWithoutProfileName: 
-    df.loc[df.UserId == userId, "ProfileName"] = getExistingProfileName(df, userId)
+# userIdsWithoutProfileName = df[df.ProfileName.isna()].UserId
+# for userId in userIdsWithoutProfileName: 
+    # df.loc[df.UserId == userId, "ProfileName"] = getExistingProfileName(df, userId)
 
 # Summary imputation
 df.loc[df.Summary.isna(), "Summary"] = "Review Summary"
