@@ -1,7 +1,4 @@
 import argparse
-from pathlib import Path
-from datetime import datetime
-import os
 import pandas as pd
 
 from utils import getExistingProfileName
@@ -35,4 +32,5 @@ df.loc[df.Summary.isna(), "Summary"] = "Review Summary"
 # duplicated values
 df_cleaned = df.drop_duplicates()
 
+# save data
 df_cleaned = df_cleaned.to_csv(args.prep_data)
