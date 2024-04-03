@@ -10,7 +10,7 @@ inputs:
 outputs:
   prep_data:
     type: uri_file
-code: code/src/prep
+code: ../../code/src/prep
 environment: azureml://locations/westeurope/workspaces/5c094bcf-44e9-48a3-847a-0afc1769aed5/environments/keras-env/versions/v6
 command: >-
   python prep.py 
