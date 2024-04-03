@@ -22,5 +22,5 @@ jobs:
       working-directory: code/aml/src
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh reviews-pipeline-train.yml
+      run: bash -x run-job.sh reviews-pipeline-train-only.yml
       working-directory: code/aml/src
