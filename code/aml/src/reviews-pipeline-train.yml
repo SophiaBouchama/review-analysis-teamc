@@ -28,7 +28,7 @@ jobs:
     inputs:
       raw_data: 
         type: uri_file
-        path: reviews.csv
+        path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/workspaceblobstore/paths/LocalUpload/041545eb1f3923dc31eca1b024cb3ba3/reviews.csv
       prep_data: reviews-prepped.csv
     outputs:
       prep_data: 
