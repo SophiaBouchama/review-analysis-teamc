@@ -4,9 +4,7 @@ on:
     branches:
       - model-naive_bayes-nt
     paths:
-      - cli/pipelines/**
       - .github/workflows/train-pipeline-job.yml
-      - cli/run-pipeline-jobs.sh
       - code/aml/**
 jobs:
   build:
@@ -20,7 +18,7 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: cli
+      working-directory: code/aml/src
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-train.yml
