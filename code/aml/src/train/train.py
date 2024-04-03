@@ -15,7 +15,7 @@ parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 args = parser.parse_args()
 
-df = pd.read_csv(args.training_data, index_col="Id")
+df = pd.read_csv(args.training_data)
 
 mlflow.start_run()
 mlflow.sklearn.autolog()
@@ -25,7 +25,7 @@ print(df.head())
 mlflow.log_metric("nb of features", df.shape[1])
 mlflow.log_metric("nb of samples", df.shape[0])
 
-X = df.apply(lambda x : x["Summary"] + " " + x["Text"], axis = 1) # nlp cleaning should be done beforehand
+X = df["CleanedText"]
 y = df.Score
 
 # 70 / 20 / 10

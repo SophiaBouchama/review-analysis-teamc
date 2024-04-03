@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/nohossat.traore/OneDrive%20-%20Avanade/Documents/AA%20-%20Academy/capstone_project/review-analysis-teamc/code/aml/src/train/mlruns/0/79291a2061fd4b7fb23b8629ab0d0536/artifacts
+end_time: 1712157974058
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 79291a2061fd4b7fb23b8629ab0d0536
+run_name: rare-cow-782
+run_uuid: 79291a2061fd4b7fb23b8629ab0d0536
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712157971618
+status: 3
+tags: []
+user_id: nohossat.traore
