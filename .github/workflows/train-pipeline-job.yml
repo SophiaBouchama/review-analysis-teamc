@@ -7,7 +7,7 @@ on:
       - cli/pipelines/**
       - .github/workflows/train-pipeline-job.yml
       - cli/run-pipeline-jobs.sh
-      - cli/setup.sh
+      - code/aml/**
 jobs:
   build:
     runs-on: ubuntu-latest
