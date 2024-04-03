@@ -91,9 +91,9 @@ def doc_vectorizer(train_series, val_series, test_series, vectorizer_type, param
 # Function to extract vectorized train/validation/test datasets 
 # from Pandas series where each element is a review string
 # using CountVectroizer
-def series2count_vecs(train_series, val_series, test_series):
+def series2count_vecs(train_series, val_series, test_series, params_dic):
 
-    vect = CountVectorizer()
+    vect = CountVectorizer(**params_dic)
 
     X_train = vect.fit_transform(train_series)
     X_val = vect.transform(val_series)
@@ -137,7 +137,7 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
     # Create labeled data for Doc2Vec training data
     doc2vec_data = []
 
-    for tag_num, doc in enumerate(docs_data):
+    for tag_num, doc in enumerate(docs_train):
         doc2vec_data.append(create_tagged_doc(doc,tag_num))
 
     #doc2vec_model = Doc2Vec(vector_size=vector_size, window=window, min_count=min_count, workers=workers, epochs=epochs)
