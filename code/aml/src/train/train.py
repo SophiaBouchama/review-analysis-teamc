@@ -29,8 +29,13 @@ X = df["CleanedText"]
 y = df.Score
 
 # 70 / 20 / 10
-X_train, X_test1, y_train, y_test1 = train_test_split(X, y, test_size=0.3, random_state=42)
-X_test, X_val, y_test, y_val = train_test_split(X_test1, y_test1, test_size=0.33, random_state=42)
+X_train, X_test1, y_train, y_test1 = train_test_split(X, y, test_size=0.3, random_state=42, stratify=X['Score'])
+X_test, X_val, y_test, y_val = train_test_split(X_test1, y_test1, test_size=0.33, random_state=42, stratify=X_test1['Score'])
+
+# Remove Score column from features
+X_train = X_train['CleanedText']
+X_test = X_test['CleanedText']
+X_val = X_val['CleanedText']
 
 # Use count vectorizer
 vect = CountVectorizer()
