@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-nyc-taxi-pipeline
+name: reviews-training-pipeline
 on:
   push:
     branches:

@@ -39,7 +39,6 @@ jobs:
     component: ./train/train.yml
     inputs:
       training_data: ${{parent.jobs.prep_job.outputs.prep_data}}
-      registered_model_name: naive_bayes_baseline
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
