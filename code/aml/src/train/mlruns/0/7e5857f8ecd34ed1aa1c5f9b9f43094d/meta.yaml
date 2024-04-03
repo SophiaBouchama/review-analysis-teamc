@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sophia.bouchama/ai-engineering-academy/capstone-project/review-analysis-teamc/code/aml/src/train/mlruns/0/7e5857f8ecd34ed1aa1c5f9b9f43094d/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 7e5857f8ecd34ed1aa1c5f9b9f43094d
+run_name: grandiose-seal-883
+run_uuid: 7e5857f8ecd34ed1aa1c5f9b9f43094d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712149177546
+status: 1
+tags: []
+user_id: sophia.bouchama

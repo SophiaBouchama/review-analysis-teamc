@@ -1,7 +1,5 @@
 import argparse
-
 import pandas as pd
-import datetime
 
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -17,7 +15,7 @@ parser.add_argument("--prep_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 args = parser.parse_args()
 
-df = pd.read_csv(args.prep_data, index_col="Id")
+df = pd.read_csv(args.prep_data, index_col="Id", encoding='utf-8')
 
 mlflow.start_run()
 mlflow.keras.autolog()

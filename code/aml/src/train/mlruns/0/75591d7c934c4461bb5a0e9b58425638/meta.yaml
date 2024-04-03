@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sophia.bouchama/ai-engineering-academy/capstone-project/review-analysis-teamc/code/aml/src/train/mlruns/0/75591d7c934c4461bb5a0e9b58425638/artifacts
+end_time: 1712148165781
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 75591d7c934c4461bb5a0e9b58425638
+run_name: bright-finch-978
+run_uuid: 75591d7c934c4461bb5a0e9b58425638
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712148141844
+status: 3
+tags: []
+user_id: sophia.bouchama
