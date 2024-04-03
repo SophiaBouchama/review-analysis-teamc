@@ -83,9 +83,9 @@ def doc_vectorizer(train_series, val_series, test_series, vectorizer_type, param
 
         return series2tfidf_vecs(train_series, val_series, test_series, params_dic)
     
-    else:
+    elif vectorizer_type == "countVec":
         
-        return series2count_vecs(train_series, val_series, test_series)
+        return series2count_vecs(train_series, val_series, test_series, params_dic)
     
 
 # Function to extract vectorized train/validation/test datasets 
