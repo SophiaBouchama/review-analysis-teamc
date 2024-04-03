@@ -103,5 +103,3 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
 
     
 
-
-

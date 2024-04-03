@@ -1,8 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: Full ML Pipeline for Amazon Fine Goods Reviews
+description: Training Pipeline for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
+experiment_name: reviews_analysis__train
+
+inputs:
+  training_data: 
+    type: uri_file
+    path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/amazondatastore/paths/UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
 
 # <inputs_and_outputs>
 outputs: 
@@ -22,22 +28,11 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  prep_job:
-    type: command
-    component: ./prep/prep.yml
-    inputs:
-      raw_data: 
-        type: uri_file
-        path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/amazondatastore/paths/UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
-      prep_data: reviews-prepped.csv
-    outputs:
-      prep_data: 
-    
   train_job:
     type: command
     component: ./train/train.yml
     inputs:
-      training_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data: ${{parent.inputs.training_data}}
       registered_model_name: xgboost-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
