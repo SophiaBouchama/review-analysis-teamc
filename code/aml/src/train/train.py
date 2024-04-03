@@ -44,16 +44,16 @@ X_val = X_val['CleanedText']
 vect = CountVectorizer()
 
 X_train_vect = vect.fit_transform(X_train)
-X_test_vect = vect.transform(X_test)
+X_val_vect = vect.transform(X_val)
 
 # Multinomial NB
 clf = MultinomialNB()
 clf.fit(X_train_vect, y_train)
 
-y_pred = clf.predict(X_test_vect)
+y_pred = clf.predict(X_val_vect)
 
-print(classification_report(y_test, y_pred))
-print(accuracy_score(y_test, y_pred))
+print(classification_report(y_val, y_pred))
+print(accuracy_score(y_val, y_pred))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
