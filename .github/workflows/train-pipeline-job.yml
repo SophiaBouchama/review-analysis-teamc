@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - model-naive_bayes-nt
-      - model-gboost-jlm--add-aml-support
+      - model-gboost-jlm
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
