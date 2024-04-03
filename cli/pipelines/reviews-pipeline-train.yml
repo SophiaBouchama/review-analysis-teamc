@@ -1,0 +1,44 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Train Model for Amazon Fine Goods Reviews
+
+display_name: amazon-reviews-pipeline
+experiment_name: reviews_analysis__train
+jobs:
+
+  prep_job:
+    type: command
+    inputs:
+      raw_data: 
+        type: uri_file
+        path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/workspaceblobstore/paths/LocalUpload/041545eb1f3923dc31eca1b024cb3ba3/reviews.csv
+      prep_data: reviews-prepped.csv
+    outputs:
+      prep_data: 
+        mode: upload
+    code: code/src/prep
+    environment: azureml://locations/westeurope/workspaces/5c094bcf-44e9-48a3-847a-0afc1769aed5/environments/keras-env/versions/v6
+    compute: azureml:cpu-cluster
+    command: >-
+      python prep.py 
+      --raw_data ${{inputs.raw_data}} 
+      --prep_data ${{outputs.prep_data}}
+  
+  
+  train_job:
+    type: command
+    inputs:
+      prep_data: ${{parent.jobs.transform_job.outputs.transformed_data}}
+      registered_model_name: naive_bayes_baseline
+    code: code/src/train
+    environment: azureml://locations/westeurope/workspaces/5c094bcf-44e9-48a3-847a-0afc1769aed5/environments/keras-env/versions/v6
+    compute: azureml:cpu-cluster
+    command: >-
+      python train.py 
+      --prep_data ${{inputs.prep_data}} 
+      --registered_model_name ${{inputs.registered_model_name}} 
+  
+
+
+

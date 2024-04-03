@@ -2,7 +2,7 @@ name: cli-jobs-pipelines-nyc-taxi-pipeline
 on:
   push:
     branches:
-      - preprocessing-nt
+      - model-naive_bayes-nt
     paths:
       - cli/pipelines/**
       - .github/workflows/train-pipeline-job.yml
@@ -17,11 +17,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}} # here credentials are missing
+        creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../run-job.sh nyc-data-train-pipeline.yml
+      run: bash -x ../run-job.sh reviews-pipeline-train.yml
       working-directory: cli/pipelines
