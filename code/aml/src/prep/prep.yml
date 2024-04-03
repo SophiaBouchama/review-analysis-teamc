@@ -10,8 +10,8 @@ inputs:
 outputs:
   prep_data:
     type: uri_file
-code: ../../code/src/prep
-environment: azureml://keras-env:6
+code: ./
+environment: azureml:keras-env:v8
 command: >-
   python prep.py 
   --raw_data ${{inputs.raw_data}} 

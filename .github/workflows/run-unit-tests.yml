@@ -2,7 +2,7 @@ name: run-python-tests
 on:
   push:
     branches:
-      - model-naive_bayes-nt
+      - preprocessing-nt
 
 jobs:
   build:

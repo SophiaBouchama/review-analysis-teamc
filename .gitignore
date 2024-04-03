@@ -3,3 +3,4 @@ data/
 .virtual_documents/
 .env
 __pycache__
+mlruns

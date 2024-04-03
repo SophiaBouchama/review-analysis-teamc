@@ -86,7 +86,11 @@ for review in tqdm(reviews['Text'].values):
 
 reviews['CleanedText'] = preprocessed_reviews 
 
-df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Score", "Usefulness", "CleanedText"]]
+df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText", "Score"]]
+
+df2 = df_cleaned.dropna()
+
+print(df2.isna().sum())
 
 # save data
-df_cleaned = df_cleaned.to_csv(args.prep_data, index=False)
+df2.to_csv(args.prep_data, index=False, na_rep='NA')

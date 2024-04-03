@@ -11,21 +11,24 @@ from sklearn.metrics import accuracy_score, classification_report
 import mlflow
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--prep_data", type=str, help="Path of prepped data")
+parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 args = parser.parse_args()
 
-df = pd.read_csv(args.prep_data)
+df = pd.read_csv(args.training_data)
 
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
 print(df.head())
+print(df.shape)
 
 mlflow.log_metric("nb of features", df.shape[1])
 mlflow.log_metric("nb of samples", df.shape[0])
 
-X = df.apply(lambda x : x[["CleanedText","Score"]], axis = 1) # nlp cleaning should be done beforehand
+df.dropna(inplace=True)
+
+X = df[["CleanedText", "Score"]]
 y = df.Score
 
 # 70 / 20 / 10
