@@ -24,7 +24,7 @@ settings:
 jobs:
   prep_job:
     type: command
-    component: ./prep.yml
+    component: ./prep/prep.yml
     inputs:
       raw_data: 
         type: uri_file
@@ -36,7 +36,7 @@ jobs:
 
   train_job:
     type: command
-    component: ./train.yml
+    component: ./train/train.yml
     inputs:
       training_data: ${{parent.jobs.prep_job.outputs.prep_data}}
       registered_model_name: naive_bayes_baseline

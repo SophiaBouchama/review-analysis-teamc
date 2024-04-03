@@ -23,5 +23,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../run-job.sh reviews-pipeline-train.yml
-      working-directory: cli/pipelines
+      run: bash -x run-job.sh reviews-pipeline-train.yml
+      working-directory: code/aml/src
