@@ -1,3 +1,4 @@
 data/
 .env
 code/aml/src/prep/__pycache__/
+code/aml/src/train/mlruns/
