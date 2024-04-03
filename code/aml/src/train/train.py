@@ -21,15 +21,12 @@ mlflow.start_run()
 mlflow.sklearn.autolog()
 
 print(df.head())
+print(df.shape)
 
 mlflow.log_metric("nb of features", df.shape[1])
 mlflow.log_metric("nb of samples", df.shape[0])
 
-print(df.shape)
-
 df.dropna(inplace=True)
-
-print(df.shape)
 
 X = df[["CleanedText", "Score"]]
 

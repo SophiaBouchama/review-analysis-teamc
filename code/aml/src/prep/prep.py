@@ -34,7 +34,7 @@ reviews['Text'] = reviews['Text'].astype('str')
 reviews.drop("ProfileName", axis=1, inplace=True)
 
 ## NLP
-# nltk.download('stopwords')
+nltk.download('stopwords')
 
 reviews['SentimentPolarity'] = reviews['Score'].apply(lambda x : 'Positive' if x > 3 else 'Negative')
 reviews['Class_Labels'] = reviews['SentimentPolarity'].apply(lambda x : 1 if x == 'Positive' else 0)
@@ -88,9 +88,9 @@ reviews['CleanedText'] = preprocessed_reviews
 
 df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText", "Score"]]
 
-df_cleaned.dropna(inplace=True)
+df2 = df_cleaned.dropna()
 
-print(df_cleaned.isna().sum())
+print(df2.isna().sum())
 
 # save data
-df_cleaned = df_cleaned.to_csv(args.prep_data, index=False)
+df2.to_csv(args.prep_data, index=False, na_rep='NA')
