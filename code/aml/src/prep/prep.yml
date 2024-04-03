@@ -11,7 +11,7 @@ outputs:
   prep_data:
     type: uri_file
 code: ./
-environment: azureml://keras-env:v6
+environment: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourceGroups/rg-review-analysis-teamc/providers/Microsoft.MachineLearningServices/workspaces/aml-review-analysis-teamc1/environments/keras-env/versions/v7
 command: >-
   python prep.py 
   --raw_data ${{inputs.raw_data}} 

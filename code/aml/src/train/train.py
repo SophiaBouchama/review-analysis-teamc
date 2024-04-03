@@ -25,7 +25,14 @@ print(df.head())
 mlflow.log_metric("nb of features", df.shape[1])
 mlflow.log_metric("nb of samples", df.shape[0])
 
-X = df["CleanedText"]
+print(df.shape)
+
+df.dropna(inplace=True)
+
+print(df.shape)
+
+X = df[["CleanedText", "Score"]]
+
 y = df.Score
 
 # 70 / 20 / 10
