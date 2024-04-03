@@ -1,0 +1,27 @@
+name: cli-jobs-pipelines-nyc-taxi-pipeline
+on:
+  push:
+    branches:
+      - model-naive_bayes-nt
+    paths:
+      - cli/pipelines/**
+      - .github/workflows/train-pipeline-job.yml
+      - cli/run-pipeline-jobs.sh
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: bash -x ../run-job.sh reviews-pipeline-train.yml
+      working-directory: cli/pipelines
