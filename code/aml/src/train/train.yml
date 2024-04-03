@@ -12,7 +12,7 @@ outputs:
     type: mlflow_model
   test_data:
     type: uri_folder
-code: ../../code/src/train
+code: ./
 environment: azureml://keras-env:6
 command: >-
   python train.py 
