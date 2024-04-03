@@ -29,7 +29,6 @@ mlflow.log_metric("nb of samples", df.shape[0])
 df.dropna(inplace=True)
 
 X = df[["CleanedText", "Score"]]
-
 y = df.Score
 
 # 70 / 20 / 10
