@@ -86,7 +86,7 @@ for review in tqdm(reviews['Text'].values):
 
 reviews['CleanedText'] = preprocessed_reviews 
 
-df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText"]]
+df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText", "Score"]]
 
 # save data
 df_cleaned = df_cleaned.to_csv(args.prep_data, index=False)

@@ -27,7 +27,7 @@ az extension add -n ml -y
 # <set_variables>
 GROUP="rg-review-analysis-teamc"
 LOCATION="westeurope"
-WORKSPACE="aml-review-analysis-teamc"
+WORKSPACE="aml-review-analysis-teamc1"
 # </set_variables>
 
 # If RESOURCE_GROUP_NAME is empty, the az configure is pending.
