@@ -21,3 +21,4 @@ dependencies:
     - mltable
     - nltk
     - tqdm
+    - tensorflow

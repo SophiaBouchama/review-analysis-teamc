@@ -11,11 +11,11 @@ from sklearn.metrics import accuracy_score, classification_report
 import mlflow
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--prep_data", type=str, help="Path of prepped data")
+parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 args = parser.parse_args()
 
-df = pd.read_csv(args.prep_data, index_col="Id")
+df = pd.read_csv(args.training_data, index_col="Id")
 
 mlflow.start_run()
 mlflow.sklearn.autolog()
