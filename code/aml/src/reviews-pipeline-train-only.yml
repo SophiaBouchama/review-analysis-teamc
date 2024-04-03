@@ -31,7 +31,7 @@ jobs:
         type: uri_file
         path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/amazondatastore/paths/UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
       
-      registered_model_name: xgboost-model
+      registered_model_name: kmeans-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   

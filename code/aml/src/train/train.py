@@ -1,17 +1,12 @@
 import argparse
 
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
-
-from utils import doc_vectorizer
-
-import xgboost
-from sklearn.ensemble import GradientBoostingClassifier
 
 import mlflow
+
+from utils import doc_vectorizer, build_svm, train_svm
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data", type=str, help="Path of prepped data")
@@ -44,22 +39,18 @@ data_val, data_test, Y_val, Y_test = train_test_split(
 
 data_train = data_train['CleanedText']
 
-X_train, X_val, X_test = doc_vectorizer(data_train, data_val, data_test, "doc2vec", {'vector_size':200, 'window':5, 'min_count':1, 'workers':4, 'epochs':20})
+X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
+"tfidf", {'min_df':1, 'ngram_range':(1,4), 'max_features':100000})
 
-model = GradientBoostingClassifier(
-    n_estimators=10, max_depth=3, random_state=10
-)
+model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
 
-model.fit(X_train, Y_train)
+model_tfidf, val_acc, test_acc = train_svm(model_tfidf, X_train_tfidf, Y_train, X_val_tfidf, Y_val, X_test_tfidf, Y_test)
 
-Y_pred = model.predict(X_val)
-
-print(accuracy_score(Y_val, Y_pred))
-print(classification_report(Y_val, Y_pred))
+print(val_acc, test_acc)
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
-    sk_model=model,
+    sk_model=model_tfidf,
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )
