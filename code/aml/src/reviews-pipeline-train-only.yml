@@ -5,6 +5,11 @@ description: Training Pipeline for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
 
+inputs:
+  training_data: 
+    type: uri_file
+    path: ./UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
+
 # <inputs_and_outputs>
 outputs: 
   pipeline_job_trained_model:
@@ -27,9 +32,7 @@ jobs:
     type: command
     component: ./train/train.yml
     inputs:
-      training_data: 
-        type: uri_file
-        path: ./UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
+      training_data: ${{parent.inputs.training_data}}
       registered_model_name: xgboost-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
