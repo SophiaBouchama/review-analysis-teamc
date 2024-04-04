@@ -30,7 +30,7 @@ X = df[["CleanedText", "Score"]]
 y = df.Score
 
 data_train, data_val_test, Y_train, Y_val_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=X['Score']
+    X, y, test_size=0.3, random_state=42, stratify=X['Score']
 )
 
 data_val, data_test, Y_val, Y_test = train_test_split(
@@ -38,9 +38,12 @@ data_val, data_test, Y_val, Y_test = train_test_split(
 )
 
 data_train = data_train['CleanedText']
+data_val = data_val['CleanedText']
+data_test = data_test['CleanedText']
+
 
 X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
-"tfidf", {'min_df':1, 'ngram_range':(1,4), 'max_features':100000})
+"tfidf", {'min_df':1, 'ngram_range':(1,3)})
 
 model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
 
