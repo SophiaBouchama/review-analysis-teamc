@@ -13,6 +13,7 @@ import mlflow
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
+parser.add_argument("--alpha", type=str, help="alpha")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
 
@@ -50,12 +51,12 @@ X_train_vect = vect.fit_transform(X_train)
 X_val_vect = vect.transform(X_val)
 
 # Multinomial NB
-clf = MultinomialNB()
+clf = MultinomialNB(alpha=args.alpha)
 clf.fit(X_train_vect, y_train)
 
-# y_pred = clf.predict(X_val_vect)
-# print(classification_report(y_val, y_pred))
-# print(accuracy_score(y_val, y_pred))
+y_pred = clf.predict(X_val_vect)
+print(classification_report(y_val, y_pred))
+print(accuracy_score(y_val, y_pred))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(

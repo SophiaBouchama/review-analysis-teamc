@@ -12,6 +12,8 @@ inputs:
     type: uri_file
   registered_model_name:
     type: string
+  alpha:
+    type: number
 outputs:
   model_output:
     type: mlflow_model
@@ -22,6 +24,7 @@ environment: azureml:keras-env@latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
+  --alpha ${{inputs.alpha}} 
   --test_data ${{outputs.test_data}} 
   --model_output ${{outputs.model_output}}
   --registered_model_name ${{inputs.registered_model_name}} 

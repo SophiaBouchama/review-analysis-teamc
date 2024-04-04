@@ -29,14 +29,27 @@ settings:
 
 jobs:
   train_job:
-    type: command
-    component: ./train/train.yml
+    type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
       registered_model_name: xgboost-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
+    sampling_algorithm: random
+    search_space:
+      alpha:
+        type: choice
+        values: [0.1, 0.2, 0.5, 0.8, 1]
+    trial: ./train/train.yml
+    objective:
+      goal: maximize
+      primary_metric: accuracy_score
+    limits:
+      max_total_trials: 5
+      max_concurrent_trials: 3
+      timeout: 3600 # 1 hour
+      trial_timeout: 720 # 20 mins
   
 # </jobs>
 
