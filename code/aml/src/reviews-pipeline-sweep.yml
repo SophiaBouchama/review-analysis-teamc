@@ -58,7 +58,7 @@ jobs:
     limits:
       max_total_trials: 10
       max_concurrent_trials: 3
-      timeout: 3600 # 1 hour
+      timeout: 10800 # 3 hours
       trial_timeout: 720 # 20 mins
   
 # </jobs>
