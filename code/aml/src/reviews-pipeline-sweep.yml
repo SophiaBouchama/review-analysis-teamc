@@ -11,7 +11,7 @@ tags:
 inputs:
   training_data: 
     type: uri_file
-    path: azureml:rnn-model-preprocessed-sb:1
+    path: azureml:rnn-preprocessed-reviews:1
 
 # <inputs_and_outputs>
 outputs: 
