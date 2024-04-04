@@ -1,14 +1,12 @@
 import argparse
 
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 from utils import doc_vectorizer
 
-import xgboost
 from sklearn.ensemble import GradientBoostingClassifier
 
 import mlflow
@@ -43,6 +41,8 @@ data_val, data_test, Y_val, Y_test = train_test_split(
 )
 
 data_train = data_train['CleanedText']
+data_val = data_val['CleanedText']
+data_test = data_test['CleanedText']
 
 X_train, X_val, X_test = doc_vectorizer(data_train, data_val, data_test, "doc2vec", {'vector_size':200, 'window':5, 'min_count':1, 'workers':4, 'epochs':20})
 
@@ -64,4 +64,4 @@ mlflow.sklearn.log_model(
     artifact_path=args.registered_model_name
 )
 
-mlflow.end_run()
+mlflow.sklearn.save_model(model, args.model_output)
