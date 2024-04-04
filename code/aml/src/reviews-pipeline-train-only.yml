@@ -34,6 +34,7 @@ jobs:
       registered_model_name: kmeans-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data:
   
 # </jobs>
 
