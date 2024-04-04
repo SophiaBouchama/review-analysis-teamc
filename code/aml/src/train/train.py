@@ -64,6 +64,9 @@ model_doc2vec, val_acc, test_acc = train_svm(model_doc2vec, X_train_doc2vec, Y_t
 
 print(val_acc, test_acc)
 
+mlflow.log_metric("validation accuracy", val_acc)
+mlflow.log_metric("test accuracy", test_acc)
+
 # REGISTER MODEL
 mlflow.sklearn.log_model(
     sk_model=model_doc2vec,
