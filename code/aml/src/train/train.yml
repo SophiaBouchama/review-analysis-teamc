@@ -16,9 +16,6 @@ inputs:
   vectorizer:
     type: string
     default: tfidf
-  vector_size:
-    type: number
-    default: 2000
   min_df:
     type: number
     default: 1
