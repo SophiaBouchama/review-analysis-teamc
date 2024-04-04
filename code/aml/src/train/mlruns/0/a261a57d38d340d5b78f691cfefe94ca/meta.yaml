@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/j.martins/Documents/AI_HUB_Academy_training/Capstone_project/review-analysis-teamc/code/aml/src/train/mlruns/0/a261a57d38d340d5b78f691cfefe94ca/artifacts
+end_time: 1712156617407
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a261a57d38d340d5b78f691cfefe94ca
+run_name: persistent-midge-514
+run_uuid: a261a57d38d340d5b78f691cfefe94ca
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712156514798
+status: 3
+tags: []
+user_id: j.martins
