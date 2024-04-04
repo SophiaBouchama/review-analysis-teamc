@@ -5,7 +5,7 @@ description: Tuning hyperparameters for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
 tags:
-  model: svm
+  model: svm-doc2vec
   task : classification
 
 inputs:
@@ -35,31 +35,34 @@ jobs:
     type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
-      registered_model_name: svm-model
+      registered_model_name: svm-model-doc2vec
       vectorizer : doc2vec
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
     sampling_algorithm: random
     search_space:
-      min_df:
+      vector_size:
         type: choice
-        values: [1, 10]
-      ngram_range_min:
+        values: [2000, 8000, 16000]
+      window:
         type: choice
-        values: [1, 2]
-      ngram_range_max:
+        values: [3]
+      min_count:
         type: choice
-        values: [2, 3, 4]
-      max_features:
+        values: [4, 8, 16]
+      workers:
         type: choice
-        values: [200, 2000, 20000]
+        values: [2, 3]
+      epochs:
+        type: choice
+        values: [5, 10, 15]
     trial: ./train/train.yml
     objective:
       goal: maximize
       primary_metric: training_accuracy_score
     limits:
-      max_total_trials: 5
+      max_total_trials: 15
       max_concurrent_trials: 3
       timeout: 3600 # 1 hour
       trial_timeout: 720 # 20 mins
