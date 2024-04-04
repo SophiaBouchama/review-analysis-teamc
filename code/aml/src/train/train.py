@@ -16,7 +16,7 @@ parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 parser.add_argument("--init_size", type=int, help="init size")
 parser.add_argument("--batch_size", type=int, help="bactch size")
-parser.add_argument("--n_init", type=float, help="n init")
+parser.add_argument("--n_init", type=int, help="n init")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
 
