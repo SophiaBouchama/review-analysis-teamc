@@ -3,6 +3,7 @@ type: pipeline
 
 description: Pipeline for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
+experiment: reviews_analysis__train
 
 # <inputs_and_outputs>
 inputs:
