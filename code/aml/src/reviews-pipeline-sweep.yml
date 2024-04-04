@@ -5,8 +5,8 @@ description: Tuning hyperparameters for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
 tags:
-  model: naive_bayes
-  task : classification
+  model: kmeans
+  task : clustering
 
 inputs:
   training_data: 
@@ -35,23 +35,29 @@ jobs:
     type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
-      registered_model_name: xgboost-model
+      registered_model_name: kmeans-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
     sampling_algorithm: random
     search_space:
-      alpha:
+      init_size:
         type: choice
-        values: [0.1, 0.2, 0.5, 0.8, 1]
+        values: [1000, 2000, 3000]
+      batch_size:
+        type: choice
+        values: [1000, 2000, 3000]
+      n_init:
+        type: choice
+        values: [1, 2, 3, 4, 5]
     trial: ./train/train.yml
     objective:
       goal: maximize
-      primary_metric: training_accuracy_score
+      primary_metric: model_inertia
     limits:
       max_total_trials: 5
       max_concurrent_trials: 3
-      timeout: 3600 # 1 hour
+      timeout: 7200 # 2 hours
       trial_timeout: 720 # 20 mins
   
 # </jobs>

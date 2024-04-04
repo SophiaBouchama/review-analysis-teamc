@@ -5,15 +5,18 @@ from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.cluster import MiniBatchKMeans
+
+from utils import get_clusters_info
 
 import mlflow
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
-parser.add_argument("--alpha", type=float, help="alpha")
+parser.add_argument("--init_size", type=int, help="init size")
+parser.add_argument("--batch_size", type=int, help="bactch size")
+parser.add_argument("--n_init", type=float, help="n init")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
 
@@ -51,22 +54,31 @@ X_train_vect = vect.fit_transform(X_train)
 X_val_vect = vect.transform(X_val)
 X_test_vect = vect.transform(X_test)
 
-# Multinomial NB
-clf = MultinomialNB(alpha=args.alpha)
-clf.fit(X_train_vect, y_train)
+# KMEANS
+num_clusters = 5
+kmeans_model = MiniBatchKMeans(n_clusters=num_clusters, init='k-means++', n_init=args.n_init, 
+                         init_size=args.init_size, batch_size=args.batch_size, verbose=False, max_iter=1000, random_state=42)
+kmeans = kmeans_model.fit(X_train_vect)
 
-y_pred = clf.predict(X_val_vect)
-y_pred_test = clf.predict(X_test_vect)
+# for training
+print("train clusters")
+get_clusters_info(kmeans, X_train_vect, vect, num_clusters)
 
-print(classification_report(y_val, y_pred))
-mlflow.log_metric("val accuracy", accuracy_score(y_val, y_pred))
-mlflow.log_metric("test accuracy", accuracy_score(y_test, y_pred_test))
+# for val
+print("val clusters")
+get_clusters_info(kmeans, X_val_vect, vect, num_clusters)
+
+# for test
+print("test clusters")
+get_clusters_info(kmeans, X_test_vect, vect, num_clusters)
+
+mlflow.log_metric("model_inertia", kmeans.inertia_)
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
-    sk_model=clf,
+    sk_model=kmeans,
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )
 
-mlflow.sklearn.save_model(clf, args.model_output)
+mlflow.sklearn.save_model(kmeans, args.model_output)
