@@ -2,7 +2,7 @@ name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - rnn-multiclass-sb 
+      - rnn-multiclass-sb-donttrigger 
     paths:
       - code/aml/**
 jobs:
