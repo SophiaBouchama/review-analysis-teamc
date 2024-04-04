@@ -9,6 +9,7 @@ inputs:
   training_data:
     type: uri_file
     path: azureml:reviews-preprocessed:3
+  registered_model_name: naive_bayes_baseline
 
 outputs: 
   pipeline_job_trained_model:
@@ -32,7 +33,7 @@ jobs:
     component: ./train/train.yml
     inputs:
       training_data: ${{parent.inputs.training_data}}
-      registered_model_name: naive_bayes_baseline
+      registered_model_name: ${{parent.inputs.registered_model_name}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
