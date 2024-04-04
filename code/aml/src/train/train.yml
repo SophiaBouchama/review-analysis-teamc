@@ -16,6 +16,9 @@ inputs:
   vectorizer:
     type: string
     default: tfidf
+  vector_size:
+    type: number
+    default: 2000
   min_df:
     type: number
     default: 1
@@ -40,6 +43,7 @@ command: >-
   --training_data ${{inputs.training_data}} 
   --registered_model_name ${{inputs.registered_model_name}} 
   --vectorizer ${{inputs.vectorizer}} 
+  --vector_size ${{inputs.vector_size}} 
   --min_df ${{inputs.min_df}} 
   --ngram_range_min ${{inputs.ngram_range_min}} 
   --ngram_range_max ${{inputs.ngram_range_max}} 
