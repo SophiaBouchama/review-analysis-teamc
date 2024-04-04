@@ -1,18 +1,16 @@
 import argparse
 
 import pandas as pd
-import numpy as np
 
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
+from gensim.corpora import Dictionary
+from gensim.models import LdaModel
 
 import mlflow
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
+parser.add_argument("--nb_passes", type=int, help="nb passes")
 args = parser.parse_args()
 
 df = pd.read_csv(args.training_data)
@@ -28,38 +26,23 @@ mlflow.log_metric("nb of samples", df.shape[0])
 
 df.dropna(inplace=True)
 
-X = df[["CleanedText", "Score"]]
-y = df.Score
+# Convert the 'tokens' column into a list of lists for Gensim
+documents = df['CleanedText'].tolist()
 
-# 70 / 20 / 10
-X_train, X_test1, y_train, y_test1 = train_test_split(X, y, test_size=0.3, random_state=42, stratify=X['Score'])
-X_test, X_val, y_test, y_val = train_test_split(X_test1, y_test1, test_size=0.33, random_state=42, stratify=X_test1['Score'])
+# Create a Gensim Dictionary
+dictionary = Dictionary(documents)
 
-# Remove Score column from features
-X_train = X_train['CleanedText']
-X_test = X_test['CleanedText']
-X_val = X_val['CleanedText']
+# Filter extremes to refine the dictionary
+dictionary.filter_extremes(no_below=5, no_above=0.5)
 
-# Use count vectorizer
-vect = CountVectorizer()
+# Create a Corpus
+corpus = [dictionary.doc2bow(doc) for doc in documents]
 
-X_train_vect = vect.fit_transform(X_train)
-X_test_vect = vect.transform(X_test)
+# Train the LDA model
+lda_model = LdaModel(corpus=corpus, id2word=dictionary, num_topics=2, passes=10)
 
-# Multinomial NB
-clf = MultinomialNB()
-clf.fit(X_train_vect, y_train)
+# Explore the topics
+for idx, topic in lda_model.print_topics(-1):
+    print(f"Topic: {idx} \nWords: {topic}")
 
-y_pred = clf.predict(X_test_vect)
-
-print(classification_report(y_test, y_pred))
-print(accuracy_score(y_test, y_pred))
-
-# REGISTER MODEL
-mlflow.sklearn.log_model(
-    sk_model=clf,
-    registered_model_name=args.registered_model_name,
-    artifact_path=args.registered_model_name
-)
-
-mlflow.end_run()
+mlflow.save_model(lda_model, args.model_output)

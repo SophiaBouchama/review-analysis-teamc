@@ -1,21 +1,31 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_linear_regression_model
-display_name: TrainLinearRegressionModel
+name: train_naive_bayes_model
+display_name: TrainNaiveBayesModel
+tags:
+  model: naive-bayes
+  task: classification
 version: 1
 type: command
 inputs:
   training_data: 
     type: uri_file
+  registered_model_name:
+    type: string
+  nb_passes:
+    type: number
 outputs:
   model_output:
     type: mlflow_model
   test_data:
     type: uri_folder
 code: ./
-environment: azureml:keras-env:v8
+environment: azureml:keras-env@latest
 command: >-
   python train.py 
-      --prep_data ${{inputs.prep_data}} 
-      --registered_model_name ${{inputs.registered_model_name}} 
+  --training_data ${{inputs.training_data}} 
+  --nb_passes ${{inputs.alpha}} 
+  --test_data ${{outputs.test_data}} 
+  --model_output ${{outputs.model_output}}
+  --registered_model_name ${{inputs.registered_model_name}} 
 # </component>
