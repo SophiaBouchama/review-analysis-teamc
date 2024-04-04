@@ -16,18 +16,21 @@ inputs:
   vectorizer:
     type: string
     default: tfidf
-  min_df:
-    type: number
-    default: 1
-  max_features:
-    type: number
-    default: 200
-  ngram_range_min:
-    type: number
-    default: 1
-  ngram_range_max:
+  window:
     type: number
     default: 3
+  workers:
+    type: number
+    default: 2
+  vector_size:
+    type: number
+    default: 2000
+  min_count:
+    type: number
+    default: 200
+  epochs:
+    type: number
+    default: 10
 outputs:
   model_output:
     type: mlflow_model
@@ -40,9 +43,10 @@ command: >-
   --training_data ${{inputs.training_data}} 
   --registered_model_name ${{inputs.registered_model_name}} 
   --vectorizer ${{inputs.vectorizer}} 
-  --min_df ${{inputs.min_df}} 
-  --ngram_range_min ${{inputs.ngram_range_min}} 
-  --ngram_range_max ${{inputs.ngram_range_max}} 
-  --max_features ${{inputs.max_features}} 
+  --window ${{inputs.window}} 
+  --vector_size ${{inputs.vector_size}} 
+  --min_count ${{inputs.min_count}} 
+  --workers ${{inputs.workers}} 
+  --epochs ${{inputs.epochs}}
 
 # </component>

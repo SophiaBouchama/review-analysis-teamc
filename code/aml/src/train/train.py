@@ -14,10 +14,11 @@ parser.add_argument("--registered_model_name", type=str, help="model name")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
 parser.add_argument("--vectorizer", type=str, help="vectorizer")
-parser.add_argument("--min_df", type=int, help="min df")
-parser.add_argument("--ngram_range_min", type=int, help="ngram min")
-parser.add_argument("--ngram_range_max", type=int, help="ngram max")
-parser.add_argument("--max_features", type=int, help="max features")
+parser.add_argument("--vector_size", type=int, help="vector size")
+parser.add_argument("--window", type=int, help="window")
+parser.add_argument("--min_count", type=int, help="min count")
+parser.add_argument("--workers", type=int, help="workers")
+parser.add_argument("--epochs", type=int, help="epochs")
 args = parser.parse_args()
 
 df = pd.read_csv(args.training_data)
@@ -49,17 +50,18 @@ data_val = data_val['CleanedText']
 data_test = data_test['CleanedText']
 
 
-X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
-args.vectorizer, {'min_df':args.min_df, 'ngram_range':(args.ngram_range_min, args.ngram_range_max)})
+# X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
+# args.vectorizer, {'min_df':args.min_df, 'ngram_range':(args.ngram_range_min, args.ngram_range_max)})
 
-# X_train_doc2vec, X_val_doc2vec, X_test_doc2vec, doc2vec_model = doc_vectorizer(data_train, data_val, data_test, "doc2vec",
-                                                                      # {'vector_size':args.vector_size, 'window':args.window, 'min_count':args.min_count, 'workers':args.workers, 'epochs':args.epochs})
+X_train_doc2vec, X_val_doc2vec, X_test_doc2vec, doc2vec_model = doc_vectorizer(data_train, data_val, data_test, "doc2vec",
+                                                                      {'vector_size':args.vector_size, 'window':args.window, 'min_count':args.min_count, 'workers':args.workers, 'epochs':args.epochs})
 
-model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
 
-# model_doc2vec, val_acc, test_acc = train_svm(model_doc2vec, X_train_doc2vec, Y_train, X_val_doc2vec, Y_val, X_test_doc2vec, Y_test)
+model_doc2vec = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
+model_doc2vec, val_acc, test_acc = train_svm(model_doc2vec, X_train_doc2vec, Y_train, X_val_doc2vec, Y_val, X_test_doc2vec, Y_test)
 
-model_tfidf, val_acc, test_acc = train_svm(model_tfidf, X_train_tfidf, Y_train, X_val_tfidf, Y_val, X_test_tfidf, Y_test)
+# model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
+# model_tfidf, val_acc, test_acc = train_svm(model_tfidf, X_train_tfidf, Y_train, X_val_tfidf, Y_val, X_test_tfidf, Y_test)
 
 print(val_acc, test_acc)
 
@@ -68,9 +70,9 @@ mlflow.log_metric("test accuracy", test_acc)
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
-    sk_model=model_tfidf,
+    sk_model=model_doc2vec,
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )
 
-mlflow.sklearn.save_model(model_tfidf, args.model_output)
+mlflow.sklearn.save_model(model_doc2vec, args.model_output)
