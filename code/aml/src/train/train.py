@@ -1,62 +1,63 @@
 import argparse
 
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
 
 import mlflow
 
+from utils import doc_vectorizer, build_svm, train_svm
+
 parser = argparse.ArgumentParser()
-parser.add_argument("--prep_data", type=str, help="Path of prepped data")
+parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
+parser.add_argument("--test_data", type=str, help="Path to test data")
+parser.add_argument("--model_output", type=str, help="Path of output model")
 args = parser.parse_args()
 
-df = pd.read_csv(args.prep_data)
+df = pd.read_csv(args.training_data)
 
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
 print(df.head())
+print(df.shape)
 
 mlflow.log_metric("nb of features", df.shape[1])
 mlflow.log_metric("nb of samples", df.shape[0])
 
-X = df.apply(lambda x : x[["CleanedText","Score"]], axis = 1) # nlp cleaning should be done beforehand
+df.dropna(inplace=True)
+
+X = df[["CleanedText", "Score"]]
 y = df.Score
 
-# 70 / 20 / 10
-X_train, X_test1, y_train, y_test1 = train_test_split(X, y, test_size=0.3, random_state=42, stratify=X['Score'])
-X_test, X_val, y_test, y_val = train_test_split(X_test1, y_test1, test_size=0.33, random_state=42, stratify=X_test1['Score'])
+data_train, data_val_test, Y_train, Y_val_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=X['Score']
+)
 
-# Remove Score column from features
-X_train = X_train['CleanedText']
-X_test = X_test['CleanedText']
-X_val = X_val['CleanedText']
+data_val, data_test, Y_val, Y_test = train_test_split(
+    data_val_test, Y_val_test, test_size=0.333, random_state=42, stratify=data_val_test['Score']
+)
 
-# Use count vectorizer
-vect = CountVectorizer()
+data_train = data_train['CleanedText']
+data_val = data_val['CleanedText']
+data_test = data_test['CleanedText']
 
-X_train_vect = vect.fit_transform(X_train)
-X_test_vect = vect.transform(X_test)
 
-# Multinomial NB
-clf = MultinomialNB()
-clf.fit(X_train_vect, y_train)
+X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
+"tfidf", {'min_df':1, 'ngram_range':(1,3)})
 
-y_pred = clf.predict(X_test_vect)
+model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
 
-print(classification_report(y_test, y_pred))
-print(accuracy_score(y_test, y_pred))
+model_tfidf, val_acc, test_acc = train_svm(model_tfidf, X_train_tfidf, Y_train, X_val_tfidf, Y_val, X_test_tfidf, Y_test)
+
+print(val_acc, test_acc)
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
-    sk_model=clf,
+    sk_model=model_tfidf,
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )
 
-mlflow.end_run()
+mlflow.sklearn.save_model(model_tfidf, args.model_output)

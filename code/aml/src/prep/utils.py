@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # Vectorization methods for documents
 
 import pandas as pd
@@ -6,6 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 
 
+>>>>>>> 7fa27e2f9992e9e6c73860d46afff85937ed8fbe
 # Utils functions
 import re
 from nltk.stem import SnowballStemmer
@@ -66,6 +69,9 @@ def decontracted(x):
     
     x = re.sub(r"([0-9]+)000000", r"\1m", x)
     x = re.sub(r"([0-9]+)000", r"\1k", x)
+<<<<<<< HEAD
+    return x
+=======
     return x
 
 
@@ -171,3 +177,4 @@ def getExistingProfileName(df, userId):
         newProfileName = profileNames[0]
 
     return newProfileName
+>>>>>>> 7fa27e2f9992e9e6c73860d46afff85937ed8fbe
