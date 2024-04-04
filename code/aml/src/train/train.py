@@ -46,16 +46,15 @@ data_train = data_train['CleanedText']
 
 X_train, X_val, X_test = doc_vectorizer(data_train, data_val, data_test, "doc2vec", {'vector_size':200, 'window':5, 'min_count':1, 'workers':4, 'epochs':20})
 
-model = GradientBoostingClassifier(
-    n_estimators=10, max_depth=3, random_state=10
-)
+X_train_vect = vect.fit_transform(X_train)
+X_val_vect = vect.transform(X_val)
 
 model.fit(X_train, Y_train)
 
-Y_pred = model.predict(X_val)
+y_pred = clf.predict(X_val_vect)
 
-print(accuracy_score(Y_val, Y_pred))
-print(classification_report(Y_val, Y_pred))
+print(classification_report(y_val, y_pred))
+print(accuracy_score(y_val, y_pred))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(

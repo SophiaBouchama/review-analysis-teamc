@@ -11,7 +11,7 @@ outputs:
   prep_data:
     type: uri_file
 code: ./
-environment: azureml:keras-env:v10
+environment: azureml:keras-env@latest
 command: >-
   python prep.py 
   --raw_data ${{inputs.raw_data}} 
