@@ -4,7 +4,6 @@ on:
     branches:
       - rnn-multiclass-sb 
     paths:
-      - .github/workflows/train-pipeline-job.yml
       - code/aml/**
 jobs:
   build:
