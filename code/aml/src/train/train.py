@@ -15,6 +15,9 @@ parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 args = parser.parse_args()
 
+print(args.training_data)
+print(args.registered_model_name)
+
 df = pd.read_csv(args.training_data)
 
 mlflow.start_run()

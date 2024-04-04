@@ -15,7 +15,5 @@ outputs:
 code: ./
 environment: azureml:keras-env@latest
 command: >-
-  python train.py 
-      --training_data ${{inputs.training_data}} 
-      --registered_model_name ${{inputs.registered_model_name}} 
+  python train.py --training_data ${{inputs.training_data}} --registered_model_name ${{inputs.registered_model_name}} 
 # </component>
