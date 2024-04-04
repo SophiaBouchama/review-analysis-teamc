@@ -15,22 +15,19 @@ inputs:
     default: svm-model
   vectorizer:
     type: string
-    default: doc2vec
-  window:
+    default: tfidf
+  min_df:
     type: number
-    default: 3
-  workers:
-    type: number
-    default: 2
-  vector_size:
-    type: number
-    default: 2000
-  min_count:
+    default: 1
+  max_features:
     type: number
     default: 200
-  epochs:
+  ngram_range_min:
     type: number
-    default: 10
+    default: 1
+  ngram_range_max:
+    type: number
+    default: 3
 outputs:
   model_output:
     type: mlflow_model
@@ -41,13 +38,11 @@ environment: azureml:keras-env:v10
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
-  --model_output ${{outputs.model_output}}
   --registered_model_name ${{inputs.registered_model_name}} 
   --vectorizer ${{inputs.vectorizer}} 
-  --window ${{inputs.window}} 
-  --vector_size ${{inputs.vector_size}} 
-  --min_count ${{inputs.min_count}} 
-  --workers ${{inputs.workers}} 
-  --epochs ${{inputs.epochs}} 
+  --min_df ${{inputs.min_df}} 
+  --ngram_range_min ${{inputs.ngram_range_min}} 
+  --ngram_range_max ${{inputs.ngram_range_max}} 
+  --max_features ${{inputs.max_features}} 
 
 # </component>
