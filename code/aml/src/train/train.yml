@@ -7,6 +7,8 @@ type: command
 inputs:
   training_data: 
     type: uri_file
+  registered_model_name:
+    type: string
 outputs:
   model_output:
     type: mlflow_model
