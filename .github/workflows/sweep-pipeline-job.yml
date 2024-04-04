@@ -1,8 +1,8 @@
-name: reviews-training-pipeline
+name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - model-naive_bayes-nt
+      - model-svm-jlm
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
