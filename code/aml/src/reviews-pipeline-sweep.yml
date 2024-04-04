@@ -35,8 +35,8 @@ jobs:
     type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
-      registered_model_name: xgboost-model
-      vectorizer : tfidf
+      registered_model_name: svm-model
+      vectorizer : doc2vec
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
