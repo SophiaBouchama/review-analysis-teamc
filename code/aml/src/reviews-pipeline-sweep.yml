@@ -57,7 +57,7 @@ jobs:
     trial: ./train/train.yml
     objective:
       goal: maximize
-      primary_metric: accuracy_score
+      primary_metric: training_accuracy_score
     limits:
       max_total_trials: 5
       max_concurrent_trials: 3

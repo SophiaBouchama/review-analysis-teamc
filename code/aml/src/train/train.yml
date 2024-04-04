@@ -38,6 +38,7 @@ environment: azureml:keras-env:v10
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
+  --model_output ${{outputs.model_output}}
   --registered_model_name ${{inputs.registered_model_name}} 
   --vectorizer ${{inputs.vectorizer}} 
   --min_df ${{inputs.min_df}} 
