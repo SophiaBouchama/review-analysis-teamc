@@ -4,9 +4,12 @@ import pandas as pd
 import numpy as np
 
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
+
+from utils import doc_vectorizer
+
+import xgboost
+from sklearn.ensemble import GradientBoostingClassifier
 
 import mlflow
 
@@ -34,24 +37,22 @@ df.dropna(inplace=True)
 X = df[["CleanedText", "Score"]]
 y = df.Score
 
-# 70 / 20 / 10
-X_train, X_test1, y_train, y_test1 = train_test_split(X, y, test_size=0.3, random_state=42, stratify=X['Score'])
-X_test, X_val, y_test, y_val = train_test_split(X_test1, y_test1, test_size=0.33, random_state=42, stratify=X_test1['Score'])
+data_train, data_val_test, Y_train, Y_val_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=X['Score']
+)
 
-# Remove Score column from features
-X_train = X_train['CleanedText']
-X_test = X_test['CleanedText']
-X_val = X_val['CleanedText']
+data_val, data_test, Y_val, Y_test = train_test_split(
+    data_val_test, Y_val_test, test_size=0.333, random_state=42, stratify=data_val_test['Score']
+)
 
-# Use count vectorizer
-vect = CountVectorizer()
+data_train = data_train['CleanedText']
+
+X_train, X_val, X_test = doc_vectorizer(data_train, data_val, data_test, "doc2vec", {'vector_size':200, 'window':5, 'min_count':1, 'workers':4, 'epochs':20})
 
 X_train_vect = vect.fit_transform(X_train)
 X_val_vect = vect.transform(X_val)
 
-# Multinomial NB
-clf = MultinomialNB()
-clf.fit(X_train_vect, y_train)
+model.fit(X_train, Y_train)
 
 y_pred = clf.predict(X_val_vect)
 
@@ -60,7 +61,7 @@ print(accuracy_score(y_val, y_pred))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
-    sk_model=clf,
+    sk_model=model,
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )

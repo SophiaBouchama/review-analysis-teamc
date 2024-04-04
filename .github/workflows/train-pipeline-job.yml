@@ -1,8 +1,13 @@
-name: cli-jobs-pipelines-nyc-taxi-pipeline
+name: reviews-training-pipeline
 on:
   push:
     branches:
       - model-naive_bayes-nt
+      - model-gboost-jlm
+      - model-k_means-nt
+      - lda-model-sb
+      - rnn-multiclass-sb
+      - model-svm-jlm--add-aml-support
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
@@ -21,5 +26,5 @@ jobs:
       working-directory: code/aml/src
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh reviews-pipeline-train.yml
+      run: bash -x run-job.sh reviews-pipeline-train-only.yml
       working-directory: code/aml/src
