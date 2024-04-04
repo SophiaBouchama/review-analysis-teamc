@@ -13,6 +13,11 @@ parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
+parser.add_argument("--vectorizer", type=str, help="vectorizer")
+parser.add_argument("--min_df", type=str, help="min df")
+parser.add_argument("--ngram_range_min", type=str, help="ngram min")
+parser.add_argument("--ngram_range_max", type=str, help="ngram max")
+parser.add_argument("--max_features", type=str, help="max features")
 args = parser.parse_args()
 
 df = pd.read_csv(args.training_data)
@@ -45,7 +50,7 @@ data_test = data_test['CleanedText']
 
 
 X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
-"tfidf", {'min_df':1, 'ngram_range':(1,3)})
+args.vectorizer, {'min_df':args.min_df, 'ngram_range':(args.ngram_range_min, args.ngram_range_max)})
 
 model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
 

@@ -13,6 +13,21 @@ inputs:
   registered_model_name: 
     type: string
     default: svm-model
+  vectorizer:
+    type: string
+    default: tfidf
+  min_df:
+    type: number
+    default: 1
+  max_features:
+    type: number
+    default: 200
+  ngram_range_min:
+    type: number
+    default: 1
+  ngram_range_max:
+    type: number
+    default: 3
 outputs:
   model_output:
     type: mlflow_model
@@ -24,4 +39,10 @@ command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
   --registered_model_name ${{inputs.registered_model_name}} 
+  --vectorizer ${{inputs.vectorizer}} 
+  --min_df ${{inputs.min_df}} 
+  --ngram_range_min ${{inputs.ngram_range_min}} 
+  --ngram_range_max ${{inputs.ngram_range_max}} 
+  --max_features ${{inputs.max_features}} 
+
 # </component>
