@@ -12,7 +12,11 @@ inputs:
     type: uri_file
   registered_model_name:
     type: string
-  alpha:
+  init_size:
+    type: number
+  n_init:
+    type: number
+  batch_size:
     type: number
 outputs:
   model_output:
