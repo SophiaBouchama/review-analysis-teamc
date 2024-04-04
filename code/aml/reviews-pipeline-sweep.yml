@@ -47,7 +47,7 @@ jobs:
     trial: ./train/train.yml
     objective:
       goal: maximize
-      primary_metric: training_accuracy_score
+      primary_metric: coherence_score
     limits:
       max_total_trials: 10
       max_concurrent_trials: 3
