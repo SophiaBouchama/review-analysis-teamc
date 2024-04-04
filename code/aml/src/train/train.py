@@ -65,7 +65,3 @@ mlflow.sklearn.log_model(
 )
 
 mlflow.sklearn.save_model(clf, args.model_output)
-
-test_data = X_val_vect.to_csv(Path(args.test_data) / "test_data.csv")
-
-mlflow.end_run()

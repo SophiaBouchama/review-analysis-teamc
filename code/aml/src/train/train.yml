@@ -2,6 +2,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: train_naive_bayes_model
 display_name: TrainNaiveBayesModel
+tags:
+  model: naive-bayes
+  task: classification
 version: 1
 type: command
 inputs:
