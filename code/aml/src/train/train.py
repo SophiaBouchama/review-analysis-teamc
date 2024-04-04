@@ -9,12 +9,17 @@ from tensorflow.keras.callbacks import EarlyStopping
 import mlflow
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--prep_data", type=str, help="Path of prepped data")
+parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
+parser.add_argument("--lstm_units_layer", type=int, help="lstm units layer")
+parser.add_argument("--embedding_dim", type=int, help="embedding dim")
+parser.add_argument("--epoch", type=int, help="embedding dim")
+parser.add_argument("--model_output", type=str, help="Path of output model")
+parser.add_argument("--test_data", type=str, help="Path to test data")
 args = parser.parse_args()
 
 # Load data
-df = pd.read_csv(args.prep_data, index_col="Id", encoding='utf-8')
+df = pd.read_csv(args.training_data, index_col="Id", encoding='utf-8')
 
 mlflow.start_run()
 mlflow.keras.autolog()
@@ -39,12 +44,12 @@ X_train_pad = pad_sequences(X_train_token, padding='post', dtype='float32', maxl
 X_test_pad = pad_sequences(X_test_token, padding='post', dtype='float32', maxlen=100)
 
 vocab_size = len(tokenizer.word_index) + 1
-embedding_dim = 50
+embedding_dim = args.embedding_dim
 
 # Define model architecture for multiclass classification
 model = Sequential([
     layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim, mask_zero=True),
-    layers.LSTM(20),
+    layers.LSTM(args.lstm_units_layer),
     layers.Dense(5, activation='softmax')  # this time with 5 outputs
 ])
 
@@ -56,7 +61,7 @@ print(model.summary())
 
 # Train the model
 es = EarlyStopping(patience=4, restore_best_weights=True)
-model.fit(X_train_pad, y_train, epochs=10, batch_size=16, validation_split=0.2, callbacks=[es])
+model.fit(X_train_pad, y_train, epochs=args.epoch, batch_size=16, validation_split=0.2, callbacks=[es])
 
 # Evaluate the model
 model.evaluate(X_test_pad, y_test)
@@ -68,4 +73,4 @@ mlflow.keras.log_model(
     artifact_path=args.registered_model_name
 )
 
-mlflow.end_run()
+mlflow.sklearn.save_model(model, args.model_output)

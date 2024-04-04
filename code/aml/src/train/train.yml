@@ -1,0 +1,42 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_svm_model
+display_name: TrainRNNModel
+tags: 
+  model : rnn
+  task : classification
+version: 1
+type: command
+inputs:
+  training_data: 
+    type: uri_file
+  registered_model_name: 
+    type: string
+    default: svm-model
+  embedding_dim:
+    type: number
+    default: 50
+  lstm_units_layer:
+    type: number
+    default: 30
+  epoch:
+    type: number
+    default: 10
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+code: ./
+environment: azureml:keras-env:v10
+command: >-
+  python train.py 
+  --training_data ${{inputs.training_data}} 
+  --model_output ${{outputs.model_output}}
+  --registered_model_name ${{inputs.registered_model_name}} 
+  --embedding_dim ${{inputs.embedding_dim}} 
+  --lstm_units_layer ${{inputs.lstm_units_laye}} 
+  --learning_rate ${{inputs.learning_rate}} 
+  --epoch ${{inputs.epoch}} 
+
+# </component>
