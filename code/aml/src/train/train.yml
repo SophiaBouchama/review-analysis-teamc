@@ -33,10 +33,10 @@ command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
   --model_output ${{outputs.model_output}}
+  --test_data ${{outputs.test_data}}
   --registered_model_name ${{inputs.registered_model_name}} 
   --embedding_dim ${{inputs.embedding_dim}} 
-  --lstm_units_layer ${{inputs.lstm_units_laye}} 
-  --learning_rate ${{inputs.learning_rate}} 
+  --lstm_units_layer ${{inputs.lstm_units_layer}} 
   --epoch ${{inputs.epoch}} 
 
 # </component>
