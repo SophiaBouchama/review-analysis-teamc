@@ -49,14 +49,18 @@ vect = CountVectorizer()
 
 X_train_vect = vect.fit_transform(X_train)
 X_val_vect = vect.transform(X_val)
+X_test_vect = vect.transform(X_test)
 
 # Multinomial NB
 clf = MultinomialNB(alpha=args.alpha)
 clf.fit(X_train_vect, y_train)
 
 y_pred = clf.predict(X_val_vect)
+y_pred_test = clf.predict(X_test_vect)
+
 print(classification_report(y_val, y_pred))
-print(accuracy_score(y_val, y_pred))
+mlflow.log_metric("val accuracy", accuracy_score(y_val, y_pred))
+mlflow.log_metric("test accuracy", accuracy_score(y_test, y_pred_test))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
