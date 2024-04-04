@@ -9,9 +9,7 @@ inputs:
   training_data:
     type: uri_file
     path: azureml:reviews-preprocessed:3
-  registered_model_name: 
-    type: string
-    default: naive_bayes_baseline
+  registered_model_name: 'naive_bayes_baseline'
 
 outputs: 
   pipeline_job_trained_model:
