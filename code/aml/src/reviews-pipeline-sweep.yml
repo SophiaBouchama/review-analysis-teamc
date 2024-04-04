@@ -1,9 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: Training Pipeline for Amazon Fine Goods Reviews
+description: Tuning hyperparameters for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
+tags:
+  model: naive_bayes
+  task : classification
 
 inputs:
   training_data: 
@@ -28,7 +31,7 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  train_job:
+  sweep_step:
     type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
