@@ -1,0 +1,11 @@
+digest: a927d92d
+name: dataset
+profile: '{"features_shape": [315113, 100], "features_size": 31511300, "features_nbytes":
+  126045200, "targets_shape": [315113, 5], "targets_size": 1575565, "targets_nbytes":
+  12604520}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"type\": \"tensor\", \"tensor-spec\":
+  {\"dtype\": \"float32\", \"shape\": [-1, 100]}}]", "targets": "[{\"type\": \"tensor\",
+  \"tensor-spec\": {\"dtype\": \"float64\", \"shape\": [-1, 5]}}]"}}'
+source: '{"tags": {"mlflow.user": "sophia.bouchama", "mlflow.source.name": "train.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "dc64a5fb671a70c622bdcb8a87f3b7e935d482c1"}}'
+source_type: code

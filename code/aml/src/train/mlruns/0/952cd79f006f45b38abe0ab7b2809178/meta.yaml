@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sophia.bouchama/ai-engineering-academy/capstone-project/review-analysis-teamc/code/aml/src/train/mlruns/0/952cd79f006f45b38abe0ab7b2809178/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 952cd79f006f45b38abe0ab7b2809178
+run_name: luxuriant-lark-302
+run_uuid: 952cd79f006f45b38abe0ab7b2809178
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712178046760
+status: 1
+tags: []
+user_id: sophia.bouchama
