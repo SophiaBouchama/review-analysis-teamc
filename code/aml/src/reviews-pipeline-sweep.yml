@@ -44,10 +44,10 @@ jobs:
     search_space:
       embedding_dim:
         type: choice
-        values: [30, 50, 60]
+        values: [10, 20, 30, 50, 60]
       lstm_units_layer:
         type: choice
-        values: [10, 20, 30]
+        values: [5, 10, 20, 30]
       epoch:
         type: choice
         values: [5, 10, 15, 20]
