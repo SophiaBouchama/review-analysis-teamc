@@ -50,18 +50,12 @@ data_val = data_val['CleanedText']
 data_test = data_test['CleanedText']
 
 
-# X_train_tfidf, X_val_tfidf, X_test_tfidf = doc_vectorizer(data_train, data_val, data_test,
-# args.vectorizer, {'min_df':args.min_df, 'ngram_range':(args.ngram_range_min, args.ngram_range_max)})
-
-X_train_doc2vec, X_val_doc2vec, X_test_doc2vec, doc2vec_model = doc_vectorizer(data_train, data_val, data_test, "doc2vec",
+X_train_doc2vec, X_val_doc2vec, X_test_doc2vec, doc2vec_model = doc_vectorizer(data_train, data_val, data_test, args.vectorizer,
                                                                       {'vector_size':args.vector_size, 'window':args.window, 'min_count':args.min_count, 'workers':args.workers, 'epochs':args.epochs})
 
-
 model_doc2vec = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
-model_doc2vec, val_acc, test_acc = train_svm(model_doc2vec, X_train_doc2vec, Y_train, X_val_doc2vec, Y_val, X_test_doc2vec, Y_test)
 
-# model_tfidf = build_svm(random_state=42, tol=1e-4, class_weight='balanced')
-# model_tfidf, val_acc, test_acc = train_svm(model_tfidf, X_train_tfidf, Y_train, X_val_tfidf, Y_val, X_test_tfidf, Y_test)
+model_doc2vec, val_acc, test_acc = train_svm(model_doc2vec, X_train_doc2vec, Y_train, X_val_doc2vec, Y_val, X_test_doc2vec, Y_test)
 
 print(val_acc, test_acc)
 

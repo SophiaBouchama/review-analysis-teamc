@@ -40,16 +40,15 @@ def doc_vectorizer(train_series, val_series, test_series, vectorizer_type, param
 # Function to extract vectorized train/validation/test datasets 
 # from Pandas series where each element is a review string
 # using CountVectroizer
-def series2count_vecs(train_series, val_series, test_series):
+def series2count_vecs(train_series, val_series, test_series, params_dic):
 
-    vect = CountVectorizer()
+    vect = CountVectorizer(**params_dic)
 
     X_train = vect.fit_transform(train_series)
     X_val = vect.transform(val_series)
     X_test = vect.transform(test_series)
 
-    return X_train, X_val, X_test
-
+    return X_train, X_val, X_test, vect
 
 # Function to extract vectorized train/validation/test datasets 
 # from Pandas series where each element is a review string
@@ -61,6 +60,17 @@ def series2tfidf_vecs(train_series, val_series, test_series, params_dic):
     X_train = tfidf.fit_transform(train_series)
     X_val = tfidf.transform(val_series)
     X_test = tfidf.transform(test_series)
+
+    return X_train, X_val, X_test, tfidf
+
+
+# Function to extract vectorized train/validation/test datasets 
+# from Pandas series and already trained TfidfVectorizer
+def extract_2tfidf_vecs(train_series, val_series, test_series, vect):
+
+    X_train = vect.transform(train_series)
+    X_val = vect.transform(val_series)
+    X_test = vect.transform(test_series)
 
     return X_train, X_val, X_test
 
@@ -86,12 +96,11 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
     # Create labeled data for Doc2Vec training data
     doc2vec_data = []
 
-    for tag_num, doc in enumerate(docs_data):
+    for tag_num, doc in enumerate(docs_train):
         doc2vec_data.append(create_tagged_doc(doc,tag_num))
 
-    #doc2vec_model = Doc2Vec(vector_size=vector_size, window=window, min_count=min_count, workers=workers, epochs=epochs)
     doc2vec_model = Doc2Vec(**params_dic)
-    
+
     doc2vec_model.build_vocab(doc2vec_data)
     doc2vec_model.train(doc2vec_data,total_examples=doc2vec_model.corpus_count,epochs=doc2vec_model.epochs)
 
@@ -99,7 +108,7 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
     X_val = np.array([doc2vec_model.infer_vector(docs_val[ind].split()) for ind in range(len(docs_val))])
     X_test = np.array([doc2vec_model.infer_vector(docs_test[ind].split()) for ind in range(len(docs_test))])
     
-    return X_train, X_val, X_test
+    return X_train, X_val, X_test, doc2vec_model
 
 
 

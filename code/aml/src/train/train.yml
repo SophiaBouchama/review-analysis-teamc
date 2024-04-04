@@ -3,7 +3,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 name: train_svm_model
 display_name: TrainSVMModel
 tags: 
-  model : svm
+  model : svm-doc2vec
   task : classification
 version: 1
 type: command

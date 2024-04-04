@@ -58,9 +58,9 @@ jobs:
       goal: maximize
       primary_metric: training_accuracy_score
     limits:
-      max_total_trials: 15
-      max_concurrent_trials: 3
-      timeout: 10800 # 3 hour
+      max_total_trials: 20
+      max_concurrent_trials: 2
+      timeout: 36000 # 3 hour
       trial_timeout: 720 # 20 mins
   
 # </jobs>
