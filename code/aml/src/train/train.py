@@ -1,6 +1,7 @@
 import argparse
 
 import pandas as pd
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
@@ -12,6 +13,9 @@ import mlflow
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data", type=str, help="Path of prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
+parser.add_argument("--test_data", type=str, help="Path to test data")
+parser.add_argument("--model_output", type=str, help="Path of output model")
+
 args = parser.parse_args()
 
 df = pd.read_csv(args.training_data)
@@ -49,10 +53,9 @@ X_val_vect = vect.transform(X_val)
 clf = MultinomialNB()
 clf.fit(X_train_vect, y_train)
 
-y_pred = clf.predict(X_val_vect)
-
-print(classification_report(y_val, y_pred))
-print(accuracy_score(y_val, y_pred))
+# y_pred = clf.predict(X_val_vect)
+# print(classification_report(y_val, y_pred))
+# print(accuracy_score(y_val, y_pred))
 
 # REGISTER MODEL
 mlflow.sklearn.log_model(
@@ -60,5 +63,9 @@ mlflow.sklearn.log_model(
     registered_model_name=args.registered_model_name,
     artifact_path=args.registered_model_name
 )
+
+mlflow.sklearn.save_model(clf, args.model_output)
+
+test_data = X_val_vect.to_csv(Path(args.test_data) / "test_data.csv")
 
 mlflow.end_run()

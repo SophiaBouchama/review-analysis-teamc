@@ -1,0 +1,22 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: predict_naive_bayes_model
+version: 1
+display_name: PredictSentiment
+type: command
+inputs:
+  model_input:
+    type: mlflow_model
+  test_data:
+    type: uri_file
+outputs:
+  predictions:
+    type: uri_file
+environment: azureml:keras-env@latest
+code: ./predict_src
+command: >-
+  python predict.py 
+  --model_input ${{inputs.model_input}} 
+  --test_data ${{inputs.test_data}}
+  --predictions ${{outputs.predictions}}
+# </component>
