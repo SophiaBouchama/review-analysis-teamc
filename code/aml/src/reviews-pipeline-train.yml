@@ -11,7 +11,7 @@ inputs:
     path: azureml:reviews-preprocessed:3
   registered_model_name: 'naive_bayes_baseline'
 
-outputs: 
+outputs:
   pipeline_job_trained_model:
     type: mlflow_model
     mode: rw_mount

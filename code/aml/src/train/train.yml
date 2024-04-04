@@ -13,7 +13,7 @@ outputs:
   model_output:
     type: mlflow_model
 code: ./
-environment: azureml:keras-env:latest
+environment: azureml:keras-env:10
 command: >-
   python train.py 
       --training_data ${{inputs.training_data}} 
