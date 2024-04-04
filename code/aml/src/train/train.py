@@ -58,4 +58,4 @@ mlflow.sklearn.log_model(
     artifact_path=args.registered_model_name
 )
 
-mlflow.end_run()
+mlflow.sklearn.save_model(model_tfidf, args.model_output)

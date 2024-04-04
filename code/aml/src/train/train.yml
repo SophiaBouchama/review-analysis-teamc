@@ -1,7 +1,10 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_linear_regression_model
-display_name: TrainLinearRegressionModel
+name: train_svm_model
+display_name: TrainSVMModel
+tags: 
+  model : svm
+  task : classification
 version: 1
 type: command
 inputs:
@@ -9,7 +12,7 @@ inputs:
     type: uri_file
   registered_model_name: 
     type: string
-    default: kmeans-model
+    default: svm-model
 outputs:
   model_output:
     type: mlflow_model
@@ -20,5 +23,7 @@ environment: azureml:keras-env:v10
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
+  --test_data ${{outputs.test_data}} 
+  --model_output ${{outputs.model_output}}
   --registered_model_name ${{inputs.registered_model_name}} 
 # </component>
