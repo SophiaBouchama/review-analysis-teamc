@@ -2,7 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model-svm-jlmjj
+      - model-svm-jlm
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**

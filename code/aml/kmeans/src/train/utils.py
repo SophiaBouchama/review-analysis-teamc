@@ -89,6 +89,18 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
     
     return X_train, X_val, X_test
 
+def get_clusters_info(kmeans, data, vect, num_clusters):
+    kmeans_clusters = kmeans.predict(data)
+    kmeans_distances = kmeans.transform(data)
+    sorted_centroids = kmeans.cluster_centers_.argsort()[:, ::-1]
+    terms = vect.get_feature_names_out()
+
+    for i in range(num_clusters):
+        print("Cluster %d:" % i)
+        for j in sorted_centroids[i, :10]:
+            print(' %s' % terms[j])
+        print("")
+
 
 
 
@@ -102,7 +114,4 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
 
 
     
-
-
-
 
