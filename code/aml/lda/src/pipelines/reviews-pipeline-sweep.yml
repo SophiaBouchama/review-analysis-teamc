@@ -38,13 +38,12 @@ jobs:
       registered_model_name: lda-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
-      test_data:
     sampling_algorithm: random
     search_space:
       nb_passes:
         type: choice
         values: [10, 20, 30]
-    trial: ./train/train.yml
+    trial: ../train/train.yml
     objective:
       goal: maximize
       primary_metric: coherence_score
