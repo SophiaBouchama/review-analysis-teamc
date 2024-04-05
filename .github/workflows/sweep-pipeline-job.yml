@@ -5,7 +5,7 @@ on:
       - timeser_analysis_ae
     paths:
       - .github/workflows/train-pipeline-job.yml
-      - code/aml/**
+      - code/aml/lda/**
 jobs:
   build:
     runs-on: ubuntu-latest
