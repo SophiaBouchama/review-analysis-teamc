@@ -1,0 +1,54 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Full ML Pipeline for Amazon Fine Goods Reviews
+display_name: amazon-reviews-pipeline
+experiment_name: reviews_analysis__train
+
+# <inputs_and_outputs>
+inputs:
+  training_data:
+    type: uri_file
+    path: azureml:reviews-preprocessed:3
+  registered_model_name: 'naive_bayes_baseline'
+
+outputs:
+  pipeline_job_trained_model:
+    type: mlflow_model
+    mode: rw_mount
+  pipeline_job_predictions:
+    mode: rw_mount 
+  pipeline_job_score_report:
+    mode: rw_mount
+# </inputs_and_outputs>
+
+# <jobs>
+settings:
+  default_datastore: azureml:amazondatastore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  train_job:
+    type: command
+    component: ./train/train.yml
+    inputs: 
+      training_data: ${{parent.inputs.training_data}}
+      registered_model_name: ${{parent.inputs.registered_model_name}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data: 
+  
+  predict_job:
+    type: command
+    component: ./predict/predict.yml
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: ${{parent.jobs.train_job.outputs.test_data}}
+    outputs:
+      predictions: ${{parent.outputs.pipeline_job_predictions}}
+
+  
+# </jobs>
+
+
