@@ -1,0 +1,46 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Training Pipeline for Amazon Fine Goods Reviews
+display_name: amazon-reviews-pipeline
+experiment_name: reviews_analysis__train
+
+inputs:
+  training_data: 
+    type: uri_file
+    path: azureml:rnn-preprocessed-reviews:1
+
+# <inputs_and_outputs>
+outputs: 
+  pipeline_job_trained_model:
+    type: mlflow_model
+    mode: rw_mount
+  pipeline_job_predictions:
+    mode: rw_mount 
+  pipeline_job_score_report:
+    mode: rw_mount
+# </inputs_and_outputs>
+
+# <jobs>
+settings:
+  default_datastore: azureml:amazondatastore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  train_job:
+    type: command
+    component: ./train/train.yml
+    inputs:
+      training_data: ${{parent.inputs.training_data}}
+      registered_model_name: rnn-multiclass-model
+      embedding_dim: 50
+      lstm_units_layer: 30
+      epoch: 10
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data:
+  
+# </jobs>
+
+
