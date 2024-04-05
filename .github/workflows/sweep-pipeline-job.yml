@@ -18,8 +18,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: code/aml/src/svm-tfidf/pipelines
+      working-directory: code/aml/src/lda/pipelines
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-sweep.yml
-      working-directory: code/aml/src/svm-tfidf/pipelines
+      working-directory: code/aml/src/lda/pipelines
