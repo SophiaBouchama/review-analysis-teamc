@@ -1,14 +1,17 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: Training Pipeline for Amazon Fine Goods Reviews
+description: Tuning hyperparameters for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
+tags:
+  model: naive_bayes
+  task : classification
 
 inputs:
   training_data: 
     type: uri_file
-    path: azureml://subscriptions/ce96fbca-fc23-466f-87e4-9b8cb5316116/resourcegroups/rg-review-analysis-teamc/workspaces/aml-review-analysis-teamc1/datastores/amazondatastore/paths/UI/2024-04-03_163642_UTC/reviews-preprocessed.csv
+    path: azureml:reviews-preprocessed:3
 
 # <inputs_and_outputs>
 outputs: 
@@ -28,14 +31,28 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  train_job:
-    type: command
-    component: ./train/train.yml
+  sweep_step:
+    type: sweep
     inputs:
       training_data: ${{parent.inputs.training_data}}
       registered_model_name: xgboost-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data:
+    sampling_algorithm: random
+    search_space:
+      alpha:
+        type: choice
+        values: [0.1, 0.2, 0.5, 0.8, 1]
+    trial: ./train/train.yml
+    objective:
+      goal: maximize
+      primary_metric: training_accuracy_score
+    limits:
+      max_total_trials: 5
+      max_concurrent_trials: 3
+      timeout: 10800 # 3 hour
+      trial_timeout: 720 # 20 mins
   
 # </jobs>
 
