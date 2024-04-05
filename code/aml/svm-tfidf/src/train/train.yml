@@ -1,0 +1,48 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_svm_model
+display_name: TrainSVMModel
+tags: 
+  model : svm-tfidf
+  task : classification
+version: 1
+type: command
+inputs:
+  training_data: 
+    type: uri_file
+  registered_model_name: 
+    type: string
+    default: svm-model-tfidf
+  vectorizer:
+    type: string
+    default: tfidf
+  min_df:
+    type: number
+    default: 1
+  max_features:
+    type: number
+    default: 200
+  ngram_range_min:
+    type: number
+    default: 1
+  ngram_range_max:
+    type: number
+    default: 3
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+code: ./
+environment: azureml:keras-env:v10
+command: >-
+  python train.py 
+  --training_data ${{inputs.training_data}} 
+  --registered_model_name ${{inputs.registered_model_name}} 
+  --vectorizer ${{inputs.vectorizer}} 
+  --min_df ${{inputs.min_df}} 
+  --ngram_range_min ${{inputs.ngram_range_min}} 
+  --ngram_range_max ${{inputs.ngram_range_max}} 
+  --max_features ${{inputs.max_features}} 
+
+# </component>

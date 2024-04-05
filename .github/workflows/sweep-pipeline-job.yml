@@ -1,8 +1,8 @@
-name: reviews-training-pipeline
+name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - model--kmeans-nt
+      - model-svm-jlm
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
@@ -18,8 +18,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: code/aml/src/kmeans/pipelines
+      working-directory: code/aml/src/svm-tfidf/pipelines
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-sweep.yml
-      working-directory: code/aml/src/kmeans/pipelines
+      working-directory: code/aml/src/svm-tfidf/pipelines

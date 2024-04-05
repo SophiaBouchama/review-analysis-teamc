@@ -1,6 +1,8 @@
+data/
 .ipynb_checkpoints/
 .virtual_documents/
 .env
 __pycache__
 mlruns
-data
+
+

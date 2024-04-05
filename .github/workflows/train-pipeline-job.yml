@@ -2,7 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model-naive_bayes-nt
+      - model-svm-jlm
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
@@ -18,8 +18,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: code/aml/src/kmeans/pipelines
+      working-directory: code/aml/src/svm-tfidf/pipelines
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-train-only.yml
-      working-directory: code/aml/src/naive-bayes
+      working-directory: code/aml/src/svm-tfidf/pipelines
