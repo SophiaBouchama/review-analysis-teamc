@@ -2,11 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model-naive_bayes-nt
-      - model-gboost-jlm
-      - model-k_means-nt
-      - lda-model-sb
-      - rnn-multiclass-sb
+      - model-svm-jlm--doc2vec
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
