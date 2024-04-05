@@ -4,7 +4,19 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from sklearn.svm import LinearSVC # Support vector machine
+from sklearn.metrics import accuracy_score, classification_report
 
+def build_svm(random_state=42, tol=1e-3, class_weight='balanced'):
+    return LinearSVC(random_state=random_state, tol=tol, class_weight=class_weight)
+
+def train_svm(_model, X_train, Y_train, X_val, Y_val, X_test, Y_test):
+    _model.fit(X_train,Y_train)
+    Y_val_pred = _model.predict(X_val)
+    val_acc = accuracy_score(Y_val,Y_val_pred)
+    Y_test_pred = _model.predict(X_test)
+    test_acc = accuracy_score(Y_test,Y_test_pred)
+    return _model, val_acc, test_acc 
 
 ## Document vectorizer
 # vectorizer_type: tfidf if using TfidfVectorizer, doc2vec if using gensim doc2vec
@@ -102,8 +114,4 @@ def series2doc2vec_vecs(train_series, val_series, test_series, params_dic):
 
 
     
-
-
-
-
 

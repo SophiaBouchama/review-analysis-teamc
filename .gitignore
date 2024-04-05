@@ -1,12 +1,8 @@
 data/
-<<<<<<< HEAD
 .ipynb_checkpoints/
 .virtual_documents/
 .env
 __pycache__
 mlruns
-=======
-.env
-code/aml/src/prep/__pycache__/
-code/aml/src/train/mlruns/
->>>>>>> 7fa27e2f9992e9e6c73860d46afff85937ed8fbe
+
+
