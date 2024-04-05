@@ -4,6 +4,9 @@ type: pipeline
 description: Training Pipeline for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
+tags:
+  model: svm-binary
+  task : classification
 
 # <inputs_and_outputs>
 outputs: 
@@ -30,8 +33,14 @@ jobs:
       training_data: 
         type: uri_file
         path: azureml:reviews-preprocessed:3
-      
-      registered_model_name: kmeans-model
+      registered_model_name: svm-binary-model
+      vectorizer: doc2vec
+      window: 3
+      workers: 2
+      vector_size: 2000
+      min_count: 200
+      epochs: 10
+
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       

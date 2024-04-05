@@ -15,7 +15,7 @@ inputs:
     default: svm-model
   vectorizer:
     type: string
-    default: tfidf
+    default: doc2vec
   window:
     type: number
     default: 3
