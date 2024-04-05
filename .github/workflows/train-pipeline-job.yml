@@ -2,7 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model--kmeans-nt
+      - model-naive_bayes-nt
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
@@ -22,4 +22,4 @@ jobs:
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-train-only.yml
-      working-directory: code/aml/src/kmeans/pipelines
+      working-directory: code/aml/src/naive-bayes
