@@ -1,3 +1,6 @@
 data/
+.ipynb_checkpoints/
+.virtual_documents/
 .env
-.pytest_cache
+__pycache__
+mlruns

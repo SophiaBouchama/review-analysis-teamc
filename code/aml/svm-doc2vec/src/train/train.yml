@@ -1,0 +1,52 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_svm_model
+display_name: TrainSVMModel
+tags: 
+  model : svm-doc2vec
+  task : classification
+version: 1
+type: command
+inputs:
+  training_data: 
+    type: uri_file
+  registered_model_name: 
+    type: string
+    default: svm-model
+  vectorizer:
+    type: string
+    default: tfidf
+  window:
+    type: number
+    default: 3
+  workers:
+    type: number
+    default: 2
+  vector_size:
+    type: number
+    default: 2000
+  min_count:
+    type: number
+    default: 200
+  epochs:
+    type: number
+    default: 10
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+code: ./
+environment: azureml:keras-env:v10
+command: >-
+  python train.py 
+  --training_data ${{inputs.training_data}} 
+  --registered_model_name ${{inputs.registered_model_name}} 
+  --vectorizer ${{inputs.vectorizer}} 
+  --window ${{inputs.window}} 
+  --vector_size ${{inputs.vector_size}} 
+  --min_count ${{inputs.min_count}} 
+  --workers ${{inputs.workers}} 
+  --epochs ${{inputs.epochs}}
+
+# </component>
