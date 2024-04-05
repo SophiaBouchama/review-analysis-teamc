@@ -2,7 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model--k_means-nt
+      - model--kmeans-nt
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
