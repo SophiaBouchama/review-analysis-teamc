@@ -1,0 +1,25 @@
+name: reviews-training-pipeline
+on:
+  push:
+    branches:
+      - model-svm-jlm
+    paths:
+      - .github/workflows/train-pipeline-job.yml
+      - code/aml/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: code/aml/src/svm-tfidf/pipelines
+      continue-on-error: true
+    - name: run job
+      run: bash -x run-job.sh reviews-pipeline-train-only.yml
+      working-directory: code/aml/src/svm-tfidf/pipelines
