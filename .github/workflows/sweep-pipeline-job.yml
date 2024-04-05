@@ -2,7 +2,7 @@ name: reviews-training-pipeline
 on:
   push:
     branches:
-      - model--kmeans-nt
+      - model--k_means-nt
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
@@ -18,8 +18,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: code/aml/src
+      working-directory: code/aml/src/kmeans/pipelines
       continue-on-error: true
     - name: run job
       run: bash -x run-job.sh reviews-pipeline-sweep.yml
-      working-directory: code/aml/src
+      working-directory: code/aml/src/kmeans/pipelines
