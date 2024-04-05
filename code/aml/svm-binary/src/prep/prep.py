@@ -49,6 +49,11 @@ reviews["Usefulness"] = (reviews["HelpfulnessNumerator"]/reviews["HelpfulnessDen
 (lambda n: ">75%" if n > 0.75 else ("<25%" if n < 0.25 else ("25-75%" if n >= 0.25 and\
                                                                         n <= 0.75 else "useless")))
 
+# Create columns for Positive, Negative and Neutral Reviews based on Score
+reviews['PositiveReviews'] = reviews['Score'] > 3
+reviews['NegativeReviews'] = reviews['Score'] < 3
+reviews['NeutralReviews'] = reviews['Score'] == 3
+
 
 #Stemming and stopwords removal
 snow = SnowballStemmer('english') #initialising the snowball stemmer
@@ -84,7 +89,10 @@ for review in tqdm(reviews['Text'].values):
     review = " ".join(filtered_sentence) # Final string of cleaned words    
     preprocessed_reviews.append(review.strip()) # Data corpus contaning cleaned reviews from the whole dataset
 
-reviews['CleanedText'] = preprocessed_reviews 
+reviews['CleanedText'] = preprocessed_reviews
+
+# change labelled data as binary for model
+reviews['Class_Labels'] = reviews['PositiveReviews'].astype(int)
 
 df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText", "Score"]]
 

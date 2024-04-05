@@ -2,7 +2,7 @@ name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - model-svm-jlm-1
+      - model-svm-jlm-xxx
     paths:
       - .github/workflows/train-pipeline-job.yml
       - code/aml/**
