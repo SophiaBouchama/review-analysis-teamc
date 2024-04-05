@@ -1,6 +1,6 @@
 import argparse
 import pandas as pd
-import re 
+import re
 
 
 parser = argparse.ArgumentParser()
@@ -45,7 +45,7 @@ def preprocessing(sentence, remove_html=True):
     if remove_html:
         sentence = re.sub(r'<.*?>', '', sentence)
 
-    return sentence   
+    return sentence
 
 # apply necessary preprocessing steps
 df['Text'] = df['Text'].apply(lambda x: preprocessing(x))

@@ -1,9 +1,14 @@
-name: sweep-reviews-training-pipeline
+name: reviews-training-pipeline
 on:
   push:
     branches:
-      - rnn-multiclass-sb-donttrigger 
+      - model-gboost-jlm
+      - model-k_means-nt
+      - lda-model-sb
+      - rnn-multiclass-sb
+      - model-svm-jlm--add-aml-support
     paths:
+      - .github/workflows/train-pipeline-job.yml
       - code/aml/**
 jobs:
   build:
@@ -17,8 +22,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: setup
       run: bash setup.sh
-      working-directory: code/aml/src/rnn-multiclass/pipelines
+      working-directory: code/aml/src
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh reviews-pipeline-sweep.yml
-      working-directory: code/aml/src/rnn-multiclass/pipelines
+      run: bash -x run-job.sh reviews-pipeline-train-only.yml
+      working-directory: code/aml/src

@@ -49,7 +49,7 @@ embedding_dim = args.embedding_dim
 # Define model architecture for multiclass classification
 model = Sequential([
     layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim, mask_zero=True),
-    layers.LSTM(args.lstm_units_layer),
+    layers.LSTM(10),
     layers.Dense(5, activation='softmax')  # this time with 5 outputs
 ])
 

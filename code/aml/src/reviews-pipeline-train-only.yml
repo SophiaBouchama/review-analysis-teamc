@@ -1,12 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: Tuning hyperparameters for Amazon Fine Goods Reviews
+description: Training Pipeline for Amazon Fine Goods Reviews
 display_name: amazon-reviews-pipeline
 experiment_name: reviews_analysis__train
-tags:
-  model: rnn
-  task : classification
 
 inputs:
   training_data: 
@@ -31,34 +28,19 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  sweep_step:
-    type: sweep
+  train_job:
+    type: command
+    component: ./train/train.yml
     inputs:
       training_data: ${{parent.inputs.training_data}}
-      registered_model_name: rnn-model
-      vectorizer : tfidf
+      registered_model_name: rnn-multiclass-model
+      embedding_dim: 50
+      lstm_units_layer: 30
+      epoch: 10
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
-    sampling_algorithm: random
-    search_space:
-      embedding_dim:
-        type: choice
-        values: [10, 20, 30, 50, 60]
-      lstm_units_layer:
-        type: choice
-        values: [5, 10, 20, 30]
-      epoch:
-        type: choice
-        values: [5, 10, 15, 20]
-    trial: ./train/train.yml
-    objective:
-      goal: maximize
-      primary_metric: accuracy
-    limits:
-      max_total_trials: 10
-      max_concurrent_trials: 3
-      timeout: 36000 # 10 hours
-      trial_timeout: 720 # 20 mins
   
 # </jobs>
+
+
