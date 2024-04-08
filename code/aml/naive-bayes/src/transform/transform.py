@@ -47,7 +47,7 @@ X_val = X_val['CleanedText']
 vect = CountVectorizer().fit(X_train)
 
 # pickle vectorizer 
-with open((Path(args.training_data_folder) / "vectorizer.pkl"), 'wb') as file:
+with open((Path(args.train_data) / "vectorizer.pkl"), 'wb') as file:
     dill.dump(vect, file)
 
 

@@ -51,8 +51,6 @@ with open((Path(args.train_data) / "vectorizer.pkl"), 'wb') as file:
     vect = dill.load(file)
 
 X_train_vect = vect.transform(X_train)
-X_val_vect = vect.transform(X_val)
-X_test_vect = vect.transform(X_test)
 
 # Multinomial NB
 clf = MultinomialNB(alpha=args.alpha)

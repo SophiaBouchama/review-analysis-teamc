@@ -10,6 +10,8 @@ type: command
 inputs:
   training_data_folder: 
     type: uri_folder
+  train_data:
+    type: uri_folder
   training_data_name:
     type: string
     default: reviews-prepped.csv

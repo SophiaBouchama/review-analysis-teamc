@@ -19,7 +19,7 @@ outputs:
 code: ./
 environment: azureml:keras-env@latest
 command: >-
-  python train.py 
+  python transform.py 
   --training_data_folder ${{inputs.training_data_folder}} 
   --training_data_name ${{inputs.training_data_name}}
   --train_data ${{outputs.train_data}} 

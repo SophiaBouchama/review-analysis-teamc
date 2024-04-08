@@ -79,7 +79,14 @@ jobs:
       max_concurrent_trials: 3
       timeout: 3600 # 1 hour
       trial_timeout: 720 # 20 mins
-  
+  predict_step:
+    type: command
+    inputs:
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+    outputs:
+      predict_result:
+    component: ./predict/predict.yml
 # </jobs>
 
 
