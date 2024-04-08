@@ -17,8 +17,11 @@ inputs:
   training_data: 
     type: uri_file
     path: azureml:reviews-preprocessed:3
+  prepped_data_name : "reviews-prepared-2.csv"
 
 outputs: 
+  prep_data: 
+    mode: rw_mount
   pipeline_job_trained_model:
     type: mlflow_model
     mode: rw_mount
@@ -26,8 +29,7 @@ outputs:
     mode: rw_mount 
   pipeline_job_score_report:
     mode: rw_mount
-  prep_data : 
-    mode: rw_mount
+  
 # </inputs_and_outputs>
 
 # <jobs>
@@ -42,12 +44,14 @@ jobs:
     component: ./prep/prep.yml
     inputs:
       raw_data: ${{parent.inputs.raw_data}}
+      final_data_name : ${{parent.inputs.prepped_data_name}}
     outputs:
       prep_data: 
   sweep_step: # finetuning
     type: sweep
     inputs:
-      training_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data_name: ${{parent.inputs.prepped_data_name}}
       registered_model_name: naive-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}

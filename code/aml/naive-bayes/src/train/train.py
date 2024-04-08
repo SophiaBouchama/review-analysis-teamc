@@ -1,6 +1,7 @@
 import argparse
 
 import pandas as pd
+
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split
@@ -11,7 +12,8 @@ from sklearn.metrics import accuracy_score, classification_report
 import mlflow
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--training_data", type=str, help="Path of prepped data")
+parser.add_argument("--training_data_folder", type=str, help="Folder path of prepped data")
+parser.add_argument("--training_data_name", type=str, help="Name of the prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 parser.add_argument("--alpha", type=float, help="alpha")
 parser.add_argument("--test_data", type=str, help="Path to test data")
@@ -20,6 +22,8 @@ parser.add_argument("--model_output", type=str, help="Path of output model")
 args = parser.parse_args()
 
 df = pd.read_csv(args.training_data)
+
+pd.read_csv((Path(args.training_data_folder) / args.training_data_name))
 
 mlflow.start_run()
 mlflow.sklearn.autolog()

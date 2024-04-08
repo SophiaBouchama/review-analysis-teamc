@@ -11,7 +11,8 @@ from utils import decontracted, removeNumbers, removeHtml, removePunctuations, r
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--raw_data", type=str, help="Path to raw data")
-parser.add_argument("--prep_data", type=str, help="Path of prepped data")
+parser.add_argument("--final_data_name", type=str, help="Nqme of the new file")
+parser.add_argument("--prep_data", type=str, help="Folder location of where to store the data")
 
 args = parser.parse_args()
 
@@ -100,4 +101,4 @@ df_cleaned.dropna(inplace = True)
 print(df_cleaned.isna().sum())
 
 # save data
-prepped_data = df_cleaned.to_csv((Path(args.prep_data) / "reviews-prepped-1.csv"), index=False)
+prepped_data = df_cleaned.to_csv((Path(args.prep_data) / args.final_data_name), index=False)

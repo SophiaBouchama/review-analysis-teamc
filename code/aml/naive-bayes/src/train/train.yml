@@ -8,8 +8,11 @@ tags:
 version: 1
 type: command
 inputs:
-  training_data: 
-    type: uri_file
+  training_data_folder: 
+    type: uri_folder
+  training_data_name:
+    type: string
+    default: reviews-prepped.csv
   registered_model_name:
     type: string
   alpha:
@@ -23,7 +26,8 @@ code: ./
 environment: azureml:keras-env@latest
 command: >-
   python train.py 
-  --training_data ${{inputs.training_data}} 
+  --training_data_folder ${{inputs.training_data_folder}} 
+  --training_data_name ${{inputs.training_data_name}}
   --alpha ${{inputs.alpha}} 
   --test_data ${{outputs.test_data}} 
   --model_output ${{outputs.model_output}}
