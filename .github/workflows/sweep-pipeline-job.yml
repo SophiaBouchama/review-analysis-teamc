@@ -5,7 +5,7 @@ on:
       - model-naive_bayes-nt
     paths:
       - .github/workflows/sweep-pipeline-job.yml
-      - code/aml/naive-bayes/
+      - code/aml/naive-bayes/**
 jobs:
   build:
     runs-on: ubuntu-latest
