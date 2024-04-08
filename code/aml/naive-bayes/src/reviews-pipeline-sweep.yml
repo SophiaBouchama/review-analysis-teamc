@@ -47,11 +47,20 @@ jobs:
       final_data_name : ${{parent.inputs.prepped_data_name}}
     outputs:
       prep_data: 
+  transform_job: # get vectorizer
+    type: command
+    component: ./transform/transform.yml
+    inputs:
+      training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data_name: ${{parent.inputs.prepped_data_name}}
+    outputs:
+      train_data: 
   sweep_step: # finetuning
     type: sweep
     inputs:
       training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
       training_data_name: ${{parent.inputs.prepped_data_name}}
+      train_data: ${{parent.jobs.transform_job.outputs.train_data}}
       registered_model_name: naive-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
