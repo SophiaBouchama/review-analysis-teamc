@@ -21,9 +21,7 @@ parser.add_argument("--model_output", type=str, help="Path of output model")
 
 args = parser.parse_args()
 
-df = pd.read_csv(args.training_data)
-
-pd.read_csv((Path(args.training_data_folder) / args.training_data_name))
+df = pd.read_csv((Path(args.training_data_folder) / args.training_data_name))
 
 mlflow.start_run()
 mlflow.sklearn.autolog()
@@ -73,4 +71,6 @@ mlflow.sklearn.log_model(
     artifact_path=args.registered_model_name
 )
 
+# SAVE MODEL
 mlflow.sklearn.save_model(clf, args.model_output)
+
