@@ -14,7 +14,7 @@ import mlflow
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data_folder", type=str, help="Folder path of prepped data")
 parser.add_argument("--training_data_name", type=str, help="Name of the prepped data")
-parser.add_argument("--train_data", type=str, help="Folder path to train data folder")
+parser.add_argument("--vect", type=str, help="Folder path to train data folder")
 
 args = parser.parse_args()
 
@@ -47,7 +47,7 @@ X_val = X_val['CleanedText']
 vect = CountVectorizer().fit(X_train)
 
 # pickle vectorizer 
-with open((Path(args.train_data) / "vectorizer.pkl"), 'wb') as file:
+with open((Path(args.vect) / "vectorizer.pkl"), 'wb') as file:
     dill.dump(vect, file)
 
 

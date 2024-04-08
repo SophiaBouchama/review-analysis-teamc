@@ -54,7 +54,7 @@ jobs:
       training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
       training_data_name: ${{parent.inputs.prepped_data_name}}
     outputs:
-      train_data: 
+      vect: 
   sweep_step: # finetuning
     type: sweep
     inputs:

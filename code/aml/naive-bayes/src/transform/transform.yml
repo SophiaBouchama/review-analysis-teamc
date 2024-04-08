@@ -14,7 +14,7 @@ inputs:
     type: string
     default: reviews-prepped.csv
 outputs:
-  train_data:
+  vect:
     type: uri_folder
 code: ./
 environment: azureml:keras-env@latest
@@ -22,5 +22,5 @@ command: >-
   python transform.py 
   --training_data_folder ${{inputs.training_data_folder}} 
   --training_data_name ${{inputs.training_data_name}}
-  --train_data ${{outputs.train_data}} 
+  --vect ${{outputs.vect}} 
 # </component>
