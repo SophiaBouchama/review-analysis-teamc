@@ -13,7 +13,7 @@ import mlflow
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data_folder", type=str, help="Folder path of prepped data")
 parser.add_argument("--training_data_name", type=str, help="Name of the prepped data")
-parser.add_argument("--train_data", type=str, help="Name of the prepped data")
+parser.add_argument("--vect", type=str, help="Name of the prepped data")
 parser.add_argument("--registered_model_name", type=str, help="model name")
 parser.add_argument("--alpha", type=float, help="alpha")
 parser.add_argument("--test_data", type=str, help="Path to test data")
@@ -47,7 +47,7 @@ X_test = X_test['CleanedText']
 X_val = X_val['CleanedText']
 
 # Use count vectorizer
-with open((Path(args.train_data) / "vectorizer.pkl"), 'wb') as file:
+with open((Path(args.vect) / "vectorizer.pkl"), 'wb') as file:
     vect = dill.load(file)
 
 X_train_vect = vect.transform(X_train)

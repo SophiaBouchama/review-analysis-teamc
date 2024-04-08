@@ -10,7 +10,7 @@ type: command
 inputs:
   training_data_folder: 
     type: uri_folder
-  train_data:
+  vect:
     type: uri_folder
   training_data_name:
     type: string
@@ -30,7 +30,7 @@ command: >-
   python train.py 
   --training_data_folder ${{inputs.training_data_folder}} 
   --training_data_name ${{inputs.training_data_name}}
-  --train_data ${{inputs.training_data_folder}} 
+  --vect ${{inputs.vect}} 
   --alpha ${{inputs.alpha}} 
   --test_data ${{outputs.test_data}} 
   --model_output ${{outputs.model_output}}

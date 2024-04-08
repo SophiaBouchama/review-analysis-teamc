@@ -60,7 +60,7 @@ jobs:
     inputs:
       training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
       training_data_name: ${{parent.inputs.prepped_data_name}}
-      train_data: ${{parent.jobs.transform_job.outputs.train_data}}
+      vect: ${{parent.jobs.transform_job.outputs.vect}}
       registered_model_name: naive-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
