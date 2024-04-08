@@ -9,7 +9,7 @@ inputs:
     type: uri_file
 outputs:
   prep_data:
-    type: uri_file
+    type: uri_folder
 code: ./
 environment: azureml:keras-env@latest
 command: >-

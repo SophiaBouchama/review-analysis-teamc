@@ -10,16 +10,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
+    - name: Check out repo
       uses: actions/checkout@v2
-    - name: azure login
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with: 
+        python-version: '3.11'
+    - name: Run Python tests
+      run: pip install -U pytest pandas numpy nltk && pytest
+      working-directory: code/aml
+    - name: Azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: setup
+    - name: Setup AML Workspace
       run: bash setup.sh
       working-directory: code/aml/naive-bayes/src
       continue-on-error: true
-    - name: run AML pipeline
+    - name: Run AML pipeline
       run: bash -x run-job.sh reviews-pipeline-sweep.yml
       working-directory: code/aml/naive-bayes/src

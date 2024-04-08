@@ -8,12 +8,16 @@ tags:
   model: naive_bayes
   task : classification
 
+
+# <inputs_and_outputs>
 inputs:
+  raw_data: 
+    type: uri_file
+    path: azureml:reviews:raw
   training_data: 
     type: uri_file
     path: azureml:reviews-preprocessed:3
 
-# <inputs_and_outputs>
 outputs: 
   pipeline_job_trained_model:
     type: mlflow_model
@@ -21,6 +25,8 @@ outputs:
   pipeline_job_predictions:
     mode: rw_mount 
   pipeline_job_score_report:
+    mode: rw_mount
+  prep_data : 
     mode: rw_mount
 # </inputs_and_outputs>
 
@@ -31,11 +37,18 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  sweep_step:
+  prep_job: # prepare data
+    type: command
+    component: ./prep/prep.yml
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+    outputs:
+      prep_data: 
+  sweep_step: # finetuning
     type: sweep
     inputs:
-      training_data: ${{parent.inputs.training_data}}
-      registered_model_name: xgboost-model
+      training_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+      registered_model_name: naive-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:

@@ -1,10 +1,11 @@
 import argparse
 import pandas as pd
 from tqdm import tqdm
-import re
 import nltk
 from nltk.stem import SnowballStemmer
 from nltk.corpus import stopwords
+from pathlib import Path
+import mlflow
 
 from utils import decontracted, removeNumbers, removeHtml, removePunctuations, removePatterns, removeURL
 
@@ -20,8 +21,14 @@ lines = [f"Raw data path: {args.raw_data}", f"Data output path: {args.prep_data}
 print(args.raw_data)
 print(args.prep_data)
 
+mlflow.start_run()
+mlflow.sklearn.autolog()
+
 # reading data
 reviews = pd.read_csv(args.raw_data)
+
+mlflow.log_metric("nb of features", reviews.shape[0])
+mlflow.log_metric("nb of samples", reviews.shape[1])
 
 # set date format to Time column
 reviews.Time = reviews.Time.apply(lambda x: pd.to_datetime(x, unit='s'))
@@ -88,9 +95,9 @@ reviews['CleanedText'] = preprocessed_reviews
 
 df_cleaned = reviews[["ProductId", "UserId", "Time", "SentimentPolarity", "Class_Labels", "Sentiment", "Usefulness", "CleanedText", "Score"]]
 
-df2 = df_cleaned.dropna()
+df_cleaned.dropna(inplace = True)
 
-print(df2.isna().sum())
+print(df_cleaned.isna().sum())
 
 # save data
-df2.to_csv(args.prep_data, index=False, na_rep='NA')
+prepped_data = df_cleaned.to_csv((Path(args.prep_data) / "reviews-prepped-1.csv"), index=False)
