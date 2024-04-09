@@ -38,7 +38,7 @@ settings:
 jobs:
   prep_job: # prepare data
     type: command
-    component: ./prep/prep.yml
+    component: ../prep/prep.yml
     inputs:
       raw_data: ${{parent.inputs.raw_data}}
       final_data_name : ${{parent.inputs.prepped_data_name}}
@@ -46,7 +46,7 @@ jobs:
       prep_data: ${{parent.outputs.prep_data}}
   transform_job: # get vectorizer
     type: command
-    component: ./transform/transform.yml
+    component: ../transform/transform.yml
     inputs:
       training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
       training_data_name: ${{parent.inputs.prepped_data_name}}
@@ -67,7 +67,7 @@ jobs:
       alpha:
         type: choice
         values: [0.1, 0.2, 0.5, 0.8, 1]
-    trial: ./train/train.yml
+    trial: ../train/train.yml
     objective:
       goal: maximize
       primary_metric: training_accuracy_score
@@ -78,21 +78,21 @@ jobs:
       trial_timeout: 720 # 20 mins
   predict_job: # predict
     type: command
+    component: ../predict/predict.yml
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
       vect: ${{parent.jobs.transform_job.outputs.vect}}
       test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
       predict_result: ${{parent.outputs.pipeline_job_predictions}}
-    component: ./predict/predict.yml
   score_job: # score
     type: command
+    component: ../score/score.yml
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
       predict_result: ${{parent.jobs.predict_job.outputs.predict_result}}
     outputs:
       score_report: ${{parent.outputs.pipeline_job_score_report}}
-    component: ./score/score.yml
 # </jobs>
 
 
