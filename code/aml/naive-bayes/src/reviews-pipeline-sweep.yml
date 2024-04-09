@@ -46,7 +46,7 @@ jobs:
       raw_data: ${{parent.inputs.raw_data}}
       final_data_name : ${{parent.inputs.prepped_data_name}}
     outputs:
-      prep_data: 
+      prep_data: ${{parent.outputs.prep_data}}
   transform_job: # get vectorizer
     type: command
     component: ./transform/transform.yml
@@ -86,7 +86,7 @@ jobs:
       vect: ${{parent.jobs.transform_job.outputs.vect}}
       test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
-      predict_result:
+      predict_result: ${{parent.outputs.pipeline_job_predictions}}
     component: ./predict/predict.yml
   score_step:
     type: command
@@ -94,7 +94,7 @@ jobs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
       predict_result: ${{parent.jobs.predict_step.outputs.predict_result}}
     outputs:
-      score_report:
+      score_report: ${{parent.outputs.pipeline_job_score_report}}
     component: ./score/score.yml
 # </jobs>
 
