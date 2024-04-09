@@ -3,10 +3,10 @@
 The ```.github/workflow/sweep-pipeline-job.yml``` file defines the following steps :
 - Checking out the dev branch 
 - Installing 3.11 Python
-- RUnning some unit tests
+- Running some unit tests
 - Log in into Azure
 - Getting relevant Azure Resource Group and Workspace
-- RUn AML Pipeline
+- Run AML Pipeline
   
 For now we run the Naive Bayes pipeline which is defined in the code/aml/naive-bayes/src/pipelines folder. 
 
