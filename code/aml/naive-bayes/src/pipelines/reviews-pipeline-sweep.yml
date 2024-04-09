@@ -8,13 +8,17 @@ tags:
   model: naive_bayes
   task : classification
 
-inputs:
-  training_data: 
-    type: uri_file
-    path: azureml:reviews-preprocessed:3
 
 # <inputs_and_outputs>
+inputs:
+  raw_data: 
+    type: uri_file
+    path: azureml:reviews:raw # data asset storing your raw data 
+  prepped_data_name : "reviews-prepared-2.csv" # name of the new dataset that will be generated
+
 outputs: 
+  prep_data: 
+    mode: rw_mount
   pipeline_job_trained_model:
     type: mlflow_model
     mode: rw_mount
@@ -22,6 +26,7 @@ outputs:
     mode: rw_mount 
   pipeline_job_score_report:
     mode: rw_mount
+  
 # </inputs_and_outputs>
 
 # <jobs>
@@ -31,11 +36,29 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  sweep_step:
+  prep_job: # prepare data
+    type: command
+    component: ./prep/prep.yml
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+      final_data_name : ${{parent.inputs.prepped_data_name}}
+    outputs:
+      prep_data: ${{parent.outputs.prep_data}}
+  transform_job: # get vectorizer
+    type: command
+    component: ./transform/transform.yml
+    inputs:
+      training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data_name: ${{parent.inputs.prepped_data_name}}
+    outputs:
+      vect: 
+  sweep_step: # finetuning
     type: sweep
     inputs:
-      training_data: ${{parent.inputs.training_data}}
-      registered_model_name: xgboost-model
+      training_data_folder: ${{parent.jobs.prep_job.outputs.prep_data}}
+      training_data_name: ${{parent.inputs.prepped_data_name}}
+      vect: ${{parent.jobs.transform_job.outputs.vect}}
+      registered_model_name: naive-model
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data:
@@ -51,9 +74,25 @@ jobs:
     limits:
       max_total_trials: 5
       max_concurrent_trials: 3
-      timeout: 10800 # 3 hour
+      timeout: 3600 # 1 hour
       trial_timeout: 720 # 20 mins
-  
+  predict_job: # predict
+    type: command
+    inputs:
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      vect: ${{parent.jobs.transform_job.outputs.vect}}
+      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+    outputs:
+      predict_result: ${{parent.outputs.pipeline_job_predictions}}
+    component: ./predict/predict.yml
+  score_job: # score
+    type: command
+    inputs:
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      predict_result: ${{parent.jobs.predict_job.outputs.predict_result}}
+    outputs:
+      score_report: ${{parent.outputs.pipeline_job_score_report}}
+    component: ./score/score.yml
 # </jobs>
 
 
