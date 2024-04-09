@@ -16,6 +16,8 @@ It has the following steps:
 - predictions step
 - scoring step
 
+To make the ```code/aml/naive-bayes/src/pipelines/reviews-pipeline-sweep.yml``` work on your repo, you should set up your ```AZURE_CREDENTIALS``` in GitHub Secrets, and replace ```raw_data``` path to your Amazon Fine Goods reviews data asset file (line 16) and the default datastore to your own (line 34).
+
 To get more info about YAML pipelines schema, please check the following resources : 
 - [Pipelines examples](https://github.com/Azure/azureml-examples/tree/main/cli/jobs/pipelines-with-components)
 - [Azure CLI Pipeline YAML Reference](https://learn.microsoft.com/en-us/azure/machine-learning/reference-yaml-job-pipeline?view=azureml-api-2#examples)
