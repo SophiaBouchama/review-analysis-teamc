@@ -7,13 +7,17 @@ type: command
 inputs:
   raw_data: 
     type: uri_file
+  final_data_name:
+    type: string 
+    default: reviews-prepped.csv
 outputs:
   prep_data:
-    type: uri_file
+    type: uri_folder
 code: ./
 environment: azureml:keras-env@latest
 command: >-
   python prep.py 
   --raw_data ${{inputs.raw_data}} 
+  --final_data_name ${{inputs.final_data_name}}
   --prep_data ${{outputs.prep_data}}
 # </component>

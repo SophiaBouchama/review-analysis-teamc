@@ -1,23 +1,20 @@
 import argparse
+import dill
+from dill import dump
 
 import pandas as pd
 
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
-import dill
+from sklearn.feature_extraction.text import CountVectorizer
 
 import mlflow
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--training_data_folder", type=str, help="Folder path of prepped data")
 parser.add_argument("--training_data_name", type=str, help="Name of the prepped data")
-parser.add_argument("--vect", type=str, help="Name of the prepped data")
-parser.add_argument("--registered_model_name", type=str, help="model name")
-parser.add_argument("--alpha", type=float, help="alpha")
-parser.add_argument("--test_data", type=str, help="Path to test data")
-parser.add_argument("--model_output", type=str, help="Path of output model")
+parser.add_argument("--vect", type=str, help="Folder path to train data folder")
 
 args = parser.parse_args()
 
@@ -47,32 +44,13 @@ X_test = X_test['CleanedText']
 X_val = X_val['CleanedText']
 
 # Use count vectorizer
-with open((Path(args.vect) / "vectorizer.pkl"), 'rb') as file:
-    vect = dill.load(file)
+vect = CountVectorizer().fit(X_train)
 
-X_train_vect = vect.transform(X_train)
-
-# Multinomial NB
-clf = MultinomialNB(alpha=args.alpha)
-clf.fit(X_train_vect, y_train)
+# pickle vectorizer 
+with open((Path(args.vect) / "vectorizer.pkl"), 'wb') as file:
+    dill.dump(vect, file)
 
 
-# REGISTER MODEL
-# mlflow.sklearn.log_model(
-#   sk_model=clf,
-#   registered_model_name=args.registered_model_name,
-#   artifact_path=args.registered_model_name
-# )
-
-# SAVE MODEL
-mlflow.sklearn.save_model(clf, args.model_output)
-
-# concat X_val and y_val as a Dataframe
-val_data = pd.DataFrame({"CleanedText" : X_val})
-val_data["Score"] = y_val
-
-# save val data
-val_data = val_data.to_csv((Path(args.test_data) / "val_data.csv"), index=False)
 
 
 

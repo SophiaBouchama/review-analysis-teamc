@@ -1,0 +1,22 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: get_scores
+display_name: ScoreResults
+version: 1
+type: command
+inputs:
+  model: 
+    type: mlflow_model
+  predict_result: 
+    type: uri_folder
+outputs:
+  score_report: 
+    type: uri_folder
+code: ./
+environment: azureml:keras-env@latest
+command: >-
+  python score.py 
+  --model ${{inputs.model}}
+  --predict_result ${{inputs.predict_result}}
+  --score_report ${{outputs.score_report}}
+# </component>

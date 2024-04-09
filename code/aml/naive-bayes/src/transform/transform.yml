@@ -1,7 +1,7 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: train_naive_bayes_model
-display_name: TrainNaiveBayesModel
+display_name: GetVectorizer
 tags:
   model: naive-bayes
   task: classification
@@ -10,29 +10,17 @@ type: command
 inputs:
   training_data_folder: 
     type: uri_folder
-  vect:
-    type: uri_folder
   training_data_name:
     type: string
     default: reviews-prepped.csv
-  registered_model_name:
-    type: string
-  alpha:
-    type: number
 outputs:
-  model_output:
-    type: mlflow_model
-  test_data:
+  vect:
     type: uri_folder
 code: ./
 environment: azureml:keras-env@latest
 command: >-
-  python train.py 
+  python transform.py 
   --training_data_folder ${{inputs.training_data_folder}} 
   --training_data_name ${{inputs.training_data_name}}
-  --vect ${{inputs.vect}} 
-  --alpha ${{inputs.alpha}} 
-  --test_data ${{outputs.test_data}} 
-  --model_output ${{outputs.model_output}}
-  --registered_model_name ${{inputs.registered_model_name}} 
+  --vect ${{outputs.vect}} 
 # </component>

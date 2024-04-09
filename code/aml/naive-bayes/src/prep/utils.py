@@ -1,18 +1,6 @@
 # Utils functions
 import re
-from nltk.stem import SnowballStemmer
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-from nltk.stem.wordnet import WordNetLemmatizer
 
-def getExistingProfileName(df, userId):
-    newProfileName = "Anonymous"
-    profileNames = df[df.UserId == userId].ProfileName.dropna()
-
-    if len(profileNames):
-        newProfileName = profileNames[0]
-
-    return newProfileName
 
 #Function to clean html tags from a sentence
 def removeHtml(sentence): 

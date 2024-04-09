@@ -25,3 +25,4 @@ dependencies:
     - keras
     - xgboost
     - gensim
+    - dill
