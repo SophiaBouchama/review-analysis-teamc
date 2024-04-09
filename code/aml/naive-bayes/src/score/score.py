@@ -1,7 +1,32 @@
+import argparse
 
-y_pred = clf.predict(X_val_vect)
-y_pred_test = clf.predict(X_test_vect)
+import pandas as pd
 
-print(classification_report(y_val, y_pred))
-mlflow.log_metric("val accuracy", accuracy_score(y_val, y_pred))
-mlflow.log_metric("test accuracy", accuracy_score(y_test, y_pred_test))
+from pathlib import Path
+
+import mlflow
+
+from sklearn.metrics import accuracy_score, classification_report
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model", type=str)
+parser.add_argument("--predict_result", type=str)
+parser.add_argument("--score_report", type=str)
+args = parser.parse_args()
+
+data = pd.read_csv(Path(args.predict_result) / "predict_result.csv")
+
+model = mlflow.sklearn.load_model(args.model)
+
+actual = data["Score"]
+predictions = data["ScorePredict"]
+
+# accuracy score
+print(f"Accuracy Score: {accuracy_score(actual, predictions)}")
+print(f"Model: {model}")
+
+# Print score report to a text file
+(Path(args.score_report) / "score.txt").write_text(f"Scored with the following model:\n{model}")
+
+with open((Path(args.score_report) / "score.txt"), "a") as f:
+    f.write(f"Accuracy: {accuracy_score(actual, predictions)} \n")

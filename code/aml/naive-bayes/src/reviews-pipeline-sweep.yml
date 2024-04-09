@@ -88,6 +88,14 @@ jobs:
     outputs:
       predict_result:
     component: ./predict/predict.yml
+  score_step:
+    type: command
+    inputs:
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      predict_result: ${{parent.jobs.predict_step.outputs.predict_result}}
+    outputs:
+      score_report:
+    component: ./score/score.yml
 # </jobs>
 
 
