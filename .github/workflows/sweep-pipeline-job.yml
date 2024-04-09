@@ -2,7 +2,7 @@ name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - model-svm-jlm--doc2vec
+      - dev
     paths:
       - .github/workflows/sweep-pipeline-job.yml
       - code/aml/naive-bayes/**
