@@ -47,7 +47,7 @@ X_test = X_test['CleanedText']
 X_val = X_val['CleanedText']
 
 # Use count vectorizer
-with open((Path(args.vect) / "vectorizer.pkl"), 'wb') as file:
+with open((Path(args.vect) / "vectorizer.pkl"), 'rb') as file:
     vect = dill.load(file)
 
 X_train_vect = vect.transform(X_train)
