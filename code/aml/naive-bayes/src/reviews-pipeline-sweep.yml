@@ -13,11 +13,8 @@ tags:
 inputs:
   raw_data: 
     type: uri_file
-    path: azureml:reviews:raw
-  training_data: 
-    type: uri_file
-    path: azureml:reviews-preprocessed:3
-  prepped_data_name : "reviews-prepared-2.csv"
+    path: azureml:reviews:raw # data asset storing your raw data 
+  prepped_data_name : "reviews-prepared-2.csv" # name of the new dataset that will be generated
 
 outputs: 
   prep_data: 
@@ -79,7 +76,7 @@ jobs:
       max_concurrent_trials: 3
       timeout: 3600 # 1 hour
       trial_timeout: 720 # 20 mins
-  predict_step:
+  predict_step: # predict
     type: command
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
@@ -88,7 +85,7 @@ jobs:
     outputs:
       predict_result: ${{parent.outputs.pipeline_job_predictions}}
     component: ./predict/predict.yml
-  score_step:
+  score_step: # score
     type: command
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}

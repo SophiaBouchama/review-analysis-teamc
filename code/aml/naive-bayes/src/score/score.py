@@ -6,7 +6,7 @@ from pathlib import Path
 
 import mlflow
 
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str)
@@ -26,7 +26,7 @@ print(f"Accuracy Score: {accuracy_score(actual, predictions)}")
 print(f"Model: {model}")
 
 # Print score report to a text file
-(Path(args.score_report) / "score.txt").write_text(f"Scored with the following model:\n{model}")
+(Path(args.score_report) / "score.txt").write_text(f"Scored with the following model:{model}\n")
 
 with open((Path(args.score_report) / "score.txt"), "a") as f:
     f.write(f"Accuracy: {accuracy_score(actual, predictions)} \n")
