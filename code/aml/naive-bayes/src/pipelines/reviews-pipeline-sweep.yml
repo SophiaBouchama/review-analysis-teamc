@@ -26,7 +26,6 @@ outputs:
     mode: rw_mount 
   pipeline_job_score_report:
     mode: rw_mount
-  
 # </inputs_and_outputs>
 
 # <jobs>
