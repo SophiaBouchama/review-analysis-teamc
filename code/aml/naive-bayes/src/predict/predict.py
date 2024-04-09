@@ -10,6 +10,7 @@ import mlflow
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str)
+parser.add_argument("--vect", type=str)
 parser.add_argument("--test_data", type=str)
 parser.add_argument("--predict_result", type=str)
 args = parser.parse_args()
@@ -20,7 +21,7 @@ data = pd.read_csv(Path(args.test_data) / "val_data.csv")
 model = mlflow.sklearn.load_model(args.model)
 
 # Use count vectorizer
-with open((Path(args.train_data) / "vectorizer.pkl"), 'wb') as file:
+with open((Path(args.vect) / "vectorizer.pkl"), 'rb') as file:
     vect = dill.load(file)
 
 X_val_vect = vect.transform(data["CleanedText"])

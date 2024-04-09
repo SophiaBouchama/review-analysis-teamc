@@ -83,6 +83,7 @@ jobs:
     type: command
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      vect: ${{parent.jobs.transform_job.outputs.vect}}
       test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
       predict_result:

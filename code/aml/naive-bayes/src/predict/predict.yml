@@ -9,6 +9,8 @@ inputs:
     type: mlflow_model
   test_data:
     type: uri_folder
+  vect:
+    type: uri_folder
 outputs:
   predict_result:
     type: uri_folder
@@ -17,6 +19,7 @@ environment: azureml:keras-env@latest
 command: >-
   python predict.py 
   --model ${{inputs.model}} 
+  --vect ${{inputs.vect}} 
   --test_data ${{inputs.test_data}} 
   --predict_result ${{outputs.predict_result}}
 # </component>
