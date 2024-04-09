@@ -1,8 +1,8 @@
-name: reviews-training-pipeline
+name: sweep-reviews-training-pipeline
 on:
   push:
     branches:
-      - model-naive_bayes-nt
+      - model-svm-jlm--doc2vec
     paths:
       - .github/workflows/sweep-pipeline-job.yml
       - code/aml/naive-bayes/**
@@ -25,8 +25,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Setup AML Workspace
       run: bash setup.sh
-      working-directory: code/aml/naive-bayes/src
+      working-directory: code/aml/naive-bayes/src/pipelines
       continue-on-error: true
     - name: Run AML pipeline
       run: bash -x run-job.sh reviews-pipeline-sweep.yml
-      working-directory: code/aml/naive-bayes/src
+      working-directory: code/aml/naive-bayes/src/pipelines

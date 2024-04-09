@@ -1,0 +1,37 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_naive_bayes_model
+display_name: TrainNaiveBayesModel
+tags:
+  model: naive-bayes
+  task: classification
+version: 1
+type: command
+inputs:
+  training_data: 
+    type: uri_file
+  registered_model_name:
+    type: string
+  init_size:
+    type: number
+  n_init:
+    type: number
+  batch_size:
+    type: number
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+code: ./
+environment: azureml:keras-env@latest
+command: >-
+  python train.py 
+  --training_data ${{inputs.training_data}} 
+  --init_size ${{inputs.init_size}} 
+  --batch_size ${{inputs.batch_size}} 
+  --n_init ${{inputs.n_init}} 
+  --test_data ${{outputs.test_data}} 
+  --model_output ${{outputs.model_output}}
+  --registered_model_name ${{inputs.registered_model_name}} 
+# </component>
