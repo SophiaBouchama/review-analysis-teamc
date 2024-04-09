@@ -1,7 +1,7 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: predict_scores
-display_name: predict_component
+display_name: GetPredictions
 version: 1
 type: command
 inputs:

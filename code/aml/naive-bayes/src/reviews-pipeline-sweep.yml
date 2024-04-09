@@ -76,7 +76,7 @@ jobs:
       max_concurrent_trials: 3
       timeout: 3600 # 1 hour
       trial_timeout: 720 # 20 mins
-  predict_step: # predict
+  predict_job: # predict
     type: command
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
@@ -85,11 +85,11 @@ jobs:
     outputs:
       predict_result: ${{parent.outputs.pipeline_job_predictions}}
     component: ./predict/predict.yml
-  score_step: # score
+  score_job: # score
     type: command
     inputs:
       model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      predict_result: ${{parent.jobs.predict_step.outputs.predict_result}}
+      predict_result: ${{parent.jobs.predict_job.outputs.predict_result}}
     outputs:
       score_report: ${{parent.outputs.pipeline_job_score_report}}
     component: ./score/score.yml

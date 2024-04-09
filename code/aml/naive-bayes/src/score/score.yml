@@ -1,7 +1,7 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: get_scores
-display_name: score_component
+display_name: ScoreResults
 version: 1
 type: command
 inputs:
